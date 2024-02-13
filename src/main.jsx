@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider, BrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './AuthProvider.jsx';
 import App from './App.jsx';
 import Signup from './pages/Signup.jsx';

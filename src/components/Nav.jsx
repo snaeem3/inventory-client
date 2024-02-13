@@ -2,13 +2,13 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
 const Nav = (props) => {
-  const { userId, isLoggedIn, isAdmin, logout } = useAuth();
+  const { user, isLoggedIn, isAdmin, logout } = useAuth();
 
   return (
     <nav>
       {isLoggedIn ? (
         <ul>
-          <li>Hello</li>
+          {/* <li>Hello {user}</li> */}
           <li>
             <button type="button" onClick={logout}>
               Logout

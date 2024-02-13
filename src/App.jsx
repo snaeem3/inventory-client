@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './AuthProvider';
-import { ProtectedRoute } from './components/ProtectedRoute';
 import './App.css';
+import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import HomePage from './pages/HomePage';
 import Signup from './pages/Signup';
+import Inventory from './pages/Inventory';
 import Nav from './components/Nav';
+import Catalog from './pages/Catalog';
+import NotFound from './components/NotFound';
 
 function App() {
   return (
@@ -20,9 +23,14 @@ function App() {
         <Route path="/sign-up" element={<Signup />} />
         <Route
           path="/inventory"
-          element={<ProtectedRoute>{/* <Inventory /> */}</ProtectedRoute>}
+          element={
+            <ProtectedRoute>
+              <Inventory />
+            </ProtectedRoute>
+          }
         />
-        {/* <Route path="/catalog" element={<Catalog />} /> */}
+        <Route path="/catalog" element={<Catalog />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </AuthProvider>
   );

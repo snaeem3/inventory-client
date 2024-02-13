@@ -1,11 +1,13 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import NotLoggedIn from './NotLoggedIn';
 
-export const ProtectedRoute = ({ children }) => {
-  const { user } = useAuth();
-  if (!user) {
-    // user is not authenticated
-    return <Navigate to="/login" />;
-  }
-  return children;
+const ProtectedRoute = ({ children }) => {
+  const { isLoggedIn } = useAuth();
+  console.log('isLoggedIn: ', isLoggedIn);
+
+  return !isLoggedIn ? <NotLoggedIn /> : children;
+  // return !isLoggedIn ? <Navigate to="/login" /> : children;
 };
+
+export default ProtectedRoute;

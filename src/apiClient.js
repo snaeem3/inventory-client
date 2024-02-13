@@ -58,8 +58,15 @@ const handleLogout = async () => {
   }
 };
 
-export {
-  handleSignUp,
-  handleLogin,
-  handleLogout,
+const fetchItems = async () => {
+  try {
+    const response = await api.get(`/catalog/items`);
+    console.log(`Fetch Items successful: `, response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching items: `, error.response.data);
+    throw error;
+  }
 };
+
+export { handleSignUp, handleLogin, handleLogout, fetchItems };
