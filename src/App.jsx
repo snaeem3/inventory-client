@@ -9,6 +9,7 @@ import Signup from './pages/Signup';
 import Inventory from './pages/Inventory';
 import Nav from './components/Nav';
 import Catalog from './pages/Catalog';
+import ItemDetail from './pages/ItemDetail';
 import NotFound from './components/NotFound';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
           }
         />
         <Route path="/catalog" element={<Catalog />} />
+        <Route path="/item/:itemId" element={<ItemDetail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AuthProvider>

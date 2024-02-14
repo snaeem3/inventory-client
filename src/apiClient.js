@@ -69,4 +69,15 @@ const fetchItems = async () => {
   }
 };
 
-export { handleSignUp, handleLogin, handleLogout, fetchItems };
+const fetchItem = async (id) => {
+  try {
+    const response = await api.get(`/catalog/item/${id}`);
+    console.log(`Fetch Item detail successful: `, response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching item detail: `, error.response.data);
+    throw error;
+  }
+};
+
+export { handleSignUp, handleLogin, handleLogout, fetchItems, fetchItem };
