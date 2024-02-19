@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import NotLoggedIn from '../components/NotLoggedIn';
+import {
+  fetchInventory,
+  changeInventoryItem,
+  deleteInventoryItem,
+} from '../apiClient';
 
 const Inventory = (props) => {
-  const { user, isLoggedIn, isAdmin } = useAuth();
-
+  const { userId, isLoggedIn } = useAuth();
+  const [inventory, setInventory] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [sortMethod, setSortMethod] = useState('A-Z');
 
@@ -15,6 +21,42 @@ const Inventory = (props) => {
   const handleSortChange = (event) => {
     setSortMethod(event.target.value);
   };
+
+  const getInventoryItems = async () => {
+    try {
+      const data = await fetchInventory(userId);
+      console.log(data);
+      setInventory(data);
+    } catch (error) {
+      console.error('Error: ', error);
+    }
+  };
+
+  async function handleChangeQuantity(itemId, newQuantity) {
+    try {
+      const response = await changeInventoryItem(userId, itemId, {
+        newQuantity,
+      });
+      console.log('Quantity change successful', response);
+      await getInventoryItems();
+    } catch (error) {
+      console.error('Error changing quantity: ', error);
+    }
+  }
+
+  async function handleDeleteInventoryItem(itemId) {
+    try {
+      const response = await deleteInventoryItem(userId, itemId);
+      console.log('Delete inventory item successful', response);
+      await getInventoryItems();
+    } catch (error) {
+      console.error('Error deleting inventory item: ', error);
+    }
+  }
+
+  useEffect(() => {
+    getInventoryItems();
+  }, []);
 
   return (
     <main>
@@ -60,6 +102,51 @@ const Inventory = (props) => {
                 onClick={(e) => setHideOutOfStock(e.target.checked)}
               />
             </div> */}
+          </div>
+          <div className="">
+            <ul>
+              {inventory.map((inventoryItem) => (
+                <li key={inventoryItem.item._id}>
+                  <Link to={`/item/${inventoryItem.item._id}`}>
+                    {inventoryItem.item.name}
+                  </Link>
+                  <div className="quantity">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleChangeQuantity(
+                          inventoryItem.item._id,
+                          inventoryItem.quantity - 1,
+                        )
+                      }
+                    >
+                      -
+                    </button>
+                    <p>{inventoryItem.quantity}</p>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleChangeQuantity(
+                          inventoryItem.item._id,
+                          inventoryItem.quantity + 1,
+                        )
+                      }
+                    >
+                      +
+                    </button>
+                    <button
+                      type="button"
+                      className="delete"
+                      onClick={() =>
+                        handleDeleteInventoryItem(inventoryItem.item._id)
+                      }
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </>
       )}

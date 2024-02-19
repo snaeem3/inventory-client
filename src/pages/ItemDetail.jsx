@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { fetchItem } from '../apiClient';
+import { addItemToInventory, fetchItem } from '../apiClient';
+import { useAuth } from '../hooks/useAuth';
 import Loading from '../components/Loading';
 
 const ItemDetail = (props) => {
   const { itemId } = useParams();
+  const { userId, isLoggedIn } = useAuth();
   const [item, setItem] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -22,6 +24,16 @@ const ItemDetail = (props) => {
     getItemDetail();
   }, []);
 
+  const handleAddItemToInventory = async (e) => {
+    e.preventDefault(); // prevent refresh
+    try {
+      const response = await addItemToInventory(userId, itemId);
+      console.log('POST successful', response);
+    } catch (error) {
+      console.error('Error adding item to inventory', error);
+    }
+  };
+
   return (
     <div>
       {loading ? (
@@ -37,6 +49,9 @@ const ItemDetail = (props) => {
             <p>Value: {item.value}</p>
             <p>Equippable: {item.equippable ? '✅' : '❌'}</p>
           </div>
+          <button type="button" onClick={handleAddItemToInventory}>
+            Add to Inventory
+          </button>
         </div>
       )}
       <Link to="/catalog">Return to Catalog</Link>

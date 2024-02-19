@@ -80,4 +80,80 @@ const fetchItem = async (id) => {
   }
 };
 
-export { handleSignUp, handleLogin, handleLogout, fetchItems, fetchItem };
+const fetchInventory = async (userId) => {
+  try {
+    const response = await api.get(`users/${userId}/inventory`);
+    console.log(`Fetch Inventory successful: `, response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching inventory: `, error.response.data);
+    throw error;
+  }
+};
+
+const addItemToInventory = async (userId, itemId, quantity = 1) => {
+  try {
+    const response = await api.post(`users/${userId}/inventory/add`, {
+      itemId,
+      quantity,
+    });
+    console.log('Add item to inventory successful: ', response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error adding item to inventory: `, error.response.data);
+    throw error;
+  }
+};
+
+const updateInventory = async (userId, inventory) => {
+  try {
+    const response = await api.put(`users/${userId}/inventory`, { inventory });
+    console.log(`Update inventory successful: `, response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating inventory: `, error);
+    throw error;
+  }
+};
+
+const changeInventoryItem = async (
+  userId,
+  itemId,
+  { newQuantity, favorite },
+) => {
+  try {
+    const response = await api.put(`/users/${userId}/inventory/${itemId}`, {
+      newQuantity,
+      favorite,
+    });
+    console.log(`Change inventory item successful`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error changing inventory item: `, error);
+    throw error;
+  }
+};
+
+const deleteInventoryItem = async (userId, itemId) => {
+  try {
+    const response = await api.delete(`/users/${userId}/inventory/${itemId}`);
+    console.log(`Delete inventory item successful`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error deleting inventory item: `, error);
+    throw error;
+  }
+};
+
+export {
+  handleSignUp,
+  handleLogin,
+  handleLogout,
+  fetchItems,
+  fetchItem,
+  fetchInventory,
+  addItemToInventory,
+  // updateInventory,
+  changeInventoryItem,
+  deleteInventoryItem,
+};
