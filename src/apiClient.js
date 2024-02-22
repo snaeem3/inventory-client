@@ -80,6 +80,44 @@ const fetchItem = async (id) => {
   }
 };
 
+const updateItem = async (itemId, itemData) => {
+  try {
+    console.log(itemData.category);
+    const response = await api.put(`/catalog/item/${itemId}`, {
+      name: itemData.name,
+      description: itemData.description,
+      category: itemData.category,
+      value: itemData.value,
+      equippable: itemData.equippable,
+      private: itemData.private,
+    });
+    console.log(`Update Item successful: `, response.data);
+    return response.data;
+  } catch (error) {
+    let errorMessage = 'An error occurred while updating item.';
+    console.log(error.response.data.errors);
+    if (error.response && error.response.data && error.response.data.errors) {
+      errorMessage = error.response.data.errors
+        .map((errorObj) => errorObj.msg)
+        .join(', ');
+    }
+    console.error(`Error updating item: `, errorMessage.toString());
+    // throw new Error(error.response.data.errors);
+    throw error.response.data.errors;
+  }
+};
+
+const fetchCategories = async () => {
+  try {
+    const response = await api.get(`/catalog/categories`);
+    console.log(`Fetch categories successful: `, response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching categories: `, error.response.data);
+    throw error;
+  }
+};
+
 const fetchInventory = async (userId) => {
   try {
     const response = await api.get(`users/${userId}/inventory`);
@@ -151,6 +189,8 @@ export {
   handleLogout,
   fetchItems,
   fetchItem,
+  updateItem,
+  fetchCategories,
   fetchInventory,
   addItemToInventory,
   // updateInventory,

@@ -8,6 +8,7 @@ const NotFound = (props) => {
     <>
       <h1>Page Not Found</h1>
       <p>The requested page could not be found</p>
+      <Link to="/">Return Home</Link>
     </>
   );
 };

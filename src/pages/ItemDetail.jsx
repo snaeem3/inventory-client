@@ -14,6 +14,7 @@ const ItemDetail = (props) => {
     const getItemDetail = async () => {
       try {
         const data = await fetchItem(itemId);
+        console.log(data);
         setItem(data);
       } catch (error) {
         console.error('Error: ', error);
@@ -22,7 +23,7 @@ const ItemDetail = (props) => {
       }
     };
     getItemDetail();
-  }, []);
+  }, [itemId]);
 
   const handleAddItemToInventory = async (e) => {
     e.preventDefault(); // prevent refresh
@@ -46,6 +47,14 @@ const ItemDetail = (props) => {
             <p className="rarity">
               Rarity: <span className={item.rarity}>{item.rarity}</span>
             </p>
+            <div>
+              Categories:
+              <ul>
+                {item.category.map((itemCategory) => (
+                  <li key={itemCategory._id}>{itemCategory.name}</li>
+                ))}
+              </ul>
+            </div>
             <p>Value: {item.value}</p>
             <p>Equippable: {item.equippable ? '✅' : '❌'}</p>
           </div>

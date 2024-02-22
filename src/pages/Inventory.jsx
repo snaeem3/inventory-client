@@ -92,16 +92,7 @@ const Inventory = (props) => {
                 <option value="high-low">Value high-low</option>
               </select>
             </div>
-            {/* <div className="equipped-box">
-              <label htmlFor="hide-out-of-stock">Hide Out of Stock?</label>
-              <input
-                type="checkbox"
-                name="hide-out-of-stock"
-                id="hide-out-of-stock"
-                className="toggle box-shadow"
-                onClick={(e) => setHideOutOfStock(e.target.checked)}
-              />
-            </div> */}
+            {/* <div className="equipped-box"></div> */}
           </div>
           <div className="">
             <ul>

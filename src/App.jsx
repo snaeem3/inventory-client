@@ -11,6 +11,7 @@ import Nav from './components/Nav';
 import Catalog from './pages/Catalog';
 import ItemDetail from './pages/ItemDetail';
 import NotFound from './components/NotFound';
+import UpdateItem from './pages/UpdateItem';
 
 function App() {
   return (
@@ -32,6 +33,14 @@ function App() {
         />
         <Route path="/catalog" element={<Catalog />} />
         <Route path="/item/:itemId" element={<ItemDetail />} />
+        <Route
+          path="/item/:itemId/update"
+          element={
+            <ProtectedRoute>
+              <UpdateItem />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AuthProvider>
