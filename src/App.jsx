@@ -43,6 +43,14 @@ function App() {
           }
         />
         <Route
+          path="catalog/item/create"
+          element={
+            <ProtectedRoute>
+              <CreateItem />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/catalog/item/:itemId/update"
           element={
             <ProtectedRoute>

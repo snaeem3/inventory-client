@@ -14,7 +14,6 @@ const ItemDetail = (props) => {
     const getItemDetail = async () => {
       try {
         const data = await fetchItem(itemId);
-        console.log(data);
         setItem(data);
       } catch (error) {
         console.error('Error: ', error);
@@ -57,6 +56,7 @@ const ItemDetail = (props) => {
             </div>
             <p>Value: {item.value}</p>
             <p>Equippable: {item.equippable ? '✅' : '❌'}</p>
+            {item.creator && <p>Created by: {item.creator.username}</p>}
           </div>
           <button type="button" onClick={handleAddItemToInventory}>
             Add to Inventory
