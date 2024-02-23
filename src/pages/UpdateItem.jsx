@@ -22,8 +22,6 @@ const UpdateItem = (props) => {
       setItem(data);
     } catch (error) {
       console.error('Error: ', error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -39,6 +37,7 @@ const UpdateItem = (props) => {
   useEffect(() => {
     getItemDetail(itemId);
     getCategories();
+    setLoading(false);
   }, [itemId]);
 
   const onSubmit = async (itemData) => {
@@ -46,7 +45,9 @@ const UpdateItem = (props) => {
       const response = await updateItem(itemId, itemData);
       console.log('Update Item successful: ', response);
       // getItemDetail(itemId);
-      navigate(itemId ? `/item/${itemId}` : response.url ? response.url : '/');
+      navigate(
+        itemId ? `/catalog/item/${itemId}` : response.url ? response.url : '/',
+      );
     } catch (error) {
       console.error('Error Updating Item', error);
       setErrors(error.map((err) => err.msg));

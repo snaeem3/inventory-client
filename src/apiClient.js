@@ -80,6 +80,33 @@ const fetchItem = async (id) => {
   }
 };
 
+const createItem = async (itemData) => {
+  try {
+    console.log(itemData.category);
+    const response = await api.post(`/catalog/item/create`, {
+      name: itemData.name,
+      description: itemData.description,
+      category: itemData.category,
+      value: itemData.value,
+      equippable: itemData.equippable,
+      private: itemData.private,
+    });
+    console.log(`Create Item successful: `, response.data);
+    return response.data;
+  } catch (error) {
+    let errorMessage = 'An error occurred while creating item.';
+    console.log(error.response.data.errors);
+    if (error.response && error.response.data && error.response.data.errors) {
+      errorMessage = error.response.data.errors
+        .map((errorObj) => errorObj.msg)
+        .join(', ');
+    }
+    console.error(`Error updating item: `, errorMessage.toString());
+    // throw new Error(error.response.data.errors);
+    throw error.response.data.errors;
+  }
+};
+
 const updateItem = async (itemId, itemData) => {
   try {
     console.log(itemData.category);
@@ -189,6 +216,7 @@ export {
   handleLogout,
   fetchItems,
   fetchItem,
+  createItem,
   updateItem,
   fetchCategories,
   fetchInventory,

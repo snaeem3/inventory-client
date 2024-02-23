@@ -11,6 +11,7 @@ import Nav from './components/Nav';
 import Catalog from './pages/Catalog';
 import ItemDetail from './pages/ItemDetail';
 import NotFound from './components/NotFound';
+import CreateItem from './pages/CreateItem';
 import UpdateItem from './pages/UpdateItem';
 
 function App() {
@@ -32,9 +33,17 @@ function App() {
           }
         />
         <Route path="/catalog" element={<Catalog />} />
-        <Route path="/item/:itemId" element={<ItemDetail />} />
+        <Route path="/catalog/item/:itemId" element={<ItemDetail />} />
         <Route
-          path="/item/:itemId/update"
+          path="/item/create"
+          element={
+            <ProtectedRoute>
+              <CreateItem />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/catalog/item/:itemId/update"
           element={
             <ProtectedRoute>
               <UpdateItem />
