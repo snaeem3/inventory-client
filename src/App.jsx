@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import HomePage from './pages/HomePage';
 import Signup from './pages/Signup';
 import Inventory from './pages/Inventory';
+import Gold from './pages/Gold';
 import Nav from './components/Nav';
 import Catalog from './pages/Catalog';
 import ItemDetail from './pages/ItemDetail';
@@ -29,6 +30,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Inventory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/gold"
+          element={
+            <ProtectedRoute>
+              <Gold />
             </ProtectedRoute>
           }
         />

@@ -227,6 +227,45 @@ const deleteInventoryItem = async (userId, itemId) => {
   }
 };
 
+const fetchGold = async (userId) => {
+  try {
+    const response = await api.get(`/users/${userId}/gold`);
+    console.log(`Fetch Gold successful: `, response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching gold: `, error.response.data);
+    throw error;
+  }
+};
+
+const quickEditGold = async (userId, newQuantity) => {
+  try {
+    const response = await api.put(`/users/${userId}/gold`, { newQuantity });
+    console.log(`Quick Edit Gold successful: `, response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error quick editing gold: `, error.response.data);
+    throw error;
+  }
+};
+
+const addTransaction = async (userId, newQuantity, note, date) => {
+  console.log(newQuantity);
+  console.log(note);
+  try {
+    const response = await api.post(`/users/${userId}/gold`, {
+      newQuantity,
+      note,
+      date,
+    });
+    console.log(`Add Gold Transaction successful: `, response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error adding gold transaction: `, error.response.data);
+    throw error;
+  }
+};
+
 export {
   handleSignUp,
   handleLogin,
@@ -242,4 +281,7 @@ export {
   // updateInventory,
   changeInventoryItem,
   deleteInventoryItem,
+  fetchGold,
+  quickEditGold,
+  addTransaction,
 };
