@@ -34,6 +34,7 @@ function App() {
         />
         <Route path="/catalog" element={<Catalog />} />
         <Route path="/catalog/item/:itemId" element={<ItemDetail />} />
+        <Route path="/item/:itemId" element={<ItemDetail />} />
         <Route
           path="/item/create"
           element={

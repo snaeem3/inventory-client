@@ -109,7 +109,6 @@ const createItem = async (itemData) => {
 
 const updateItem = async (itemId, itemData) => {
   try {
-    console.log(itemData.category);
     const response = await api.put(`/catalog/item/${itemId}`, {
       name: itemData.name,
       description: itemData.description,
@@ -130,6 +129,24 @@ const updateItem = async (itemId, itemData) => {
     }
     console.error(`Error updating item: `, errorMessage.toString());
     // throw new Error(error.response.data.errors);
+    throw error.response.data.errors;
+  }
+};
+
+const deleteItem = async (itemId) => {
+  try {
+    const response = await api.delete(`/catalog/item/${itemId}`);
+    console.log(`Delete Item successful: `, response.data);
+    return response.data;
+  } catch (error) {
+    let errorMessage = 'An error occurred while deleting item.';
+    console.log(error.response.data);
+    if (error.response && error.response.data && error.response.data.errors) {
+      errorMessage = error.response.data.errors
+        .map((errorObj) => errorObj.msg)
+        .join(', ');
+    }
+    console.error(`Error deleting item: `, errorMessage.toString());
     throw error.response.data.errors;
   }
 };
@@ -218,6 +235,7 @@ export {
   fetchItem,
   createItem,
   updateItem,
+  deleteItem,
   fetchCategories,
   fetchInventory,
   addItemToInventory,

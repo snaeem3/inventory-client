@@ -98,7 +98,7 @@ const Inventory = (props) => {
             <ul>
               {inventory.map((inventoryItem) => (
                 <li key={inventoryItem.item._id}>
-                  <Link to={`/item/${inventoryItem.item._id}`}>
+                  <Link to={`/catalog/item/${inventoryItem.item._id}`}>
                     {inventoryItem.item.name}
                   </Link>
                   <div className="quantity">

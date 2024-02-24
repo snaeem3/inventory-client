@@ -26,7 +26,7 @@ const Catalog = (props) => {
       <ul>
         {items.map((item) => (
           <li key={item._id}>
-            <Link to={`/item/${item._id}`}>{item.name}</Link>
+            <Link to={`/catalog/item/${item._id}`}>{item.name}</Link>
           </li>
         ))}
       </ul>
