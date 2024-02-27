@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { fetchGold, quickEditGold, addTransaction } from '../apiClient';
+import {
+  fetchGold,
+  quickEditGold,
+  addTransaction,
+  deleteTransaction,
+} from '../apiClient';
 import NotLoggedIn from '../components/NotLoggedIn';
 import Errors from '../components/Errors';
 import TransactionForm from '../components/TransactionForm';
@@ -68,7 +73,15 @@ const Gold = (props) => {
   };
 
   //   const handleEditTransaction
-  //   const handleDeleteTransaction
+  const handleDeleteTransaction = async (transactionId) => {
+    try {
+      const response = await deleteTransaction(userId, transactionId);
+      console.log('Transaction successfully deleted: ', response);
+      setTransactions(response.transactions);
+    } catch (error) {
+      console.error('Error deleting transaction: ', error.response?.data);
+    }
+  };
 
   useEffect(() => {
     getGold(userId);
@@ -76,7 +89,7 @@ const Gold = (props) => {
   }, [userId]);
 
   return (
-    <main>
+    <main className="gold-page">
       <h1>Your Gold</h1>
       {!isLoggedIn && <NotLoggedIn />}
       {isLoggedIn && (
@@ -119,13 +132,20 @@ const Gold = (props) => {
               <h2>Previous Transactions</h2>
               {transactions.length > 0 ? (
                 <ul className="transaction-list">
-                  {transactions.map((transaction) => (
+                  {transactions.toReversed().map((transaction) => (
                     <li key={transaction._id}>
                       <p className="transaction-note">{transaction.note}</p>
                       <p>Previous Gold balance: {transaction.prevQuantity}</p>
                       <p className="transaction-date date">
                         {formatDate(transaction.date)}
                       </p>
+                      <button
+                        className="delete"
+                        type="button"
+                        onClick={() => handleDeleteTransaction(transaction._id)}
+                      >
+                        Delete
+                      </button>
                     </li>
                   ))}
                 </ul>

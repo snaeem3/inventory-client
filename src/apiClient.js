@@ -258,10 +258,22 @@ const addTransaction = async (userId, newQuantity, note, date) => {
       note,
       date,
     });
-    console.log(`Add Gold Transaction successful: `, response.data);
+    console.log(`Add gold transaction successful: `, response.data);
     return response.data;
   } catch (error) {
     console.error(`Error adding gold transaction: `, error.response.data);
+    throw error;
+  }
+};
+
+const deleteTransaction = async (userId, transactionId) => {
+  console.log('transactionId: ', transactionId);
+  try {
+    const response = await api.delete(`/users/${userId}/gold/${transactionId}`);
+    console.log(`Delete gold transaction successful: `, response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error deleting gold transaction: `, error.response.data);
     throw error;
   }
 };
@@ -284,4 +296,5 @@ export {
   fetchGold,
   quickEditGold,
   addTransaction,
+  deleteTransaction,
 };
