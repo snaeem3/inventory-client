@@ -1,19 +1,40 @@
 import React, { useState, useEffect } from 'react';
 
 const TransactionForm = (props) => {
-  const { onTransactionSubmit, initialNote, initialQuantity, initialDate } =
-    props;
+  const {
+    onTransactionSubmit,
+    initialNote,
+    initialQuantity,
+    initialDate,
+    transactionId,
+  } = props;
 
   const currentDate = new Date().toISOString().split('T')[0];
+  // Function to format the initialDate
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    // Adjusting for time zone offset
+    date.setDate(date.getDate() - 1);
+    return date.toISOString().split('T')[0];
+  };
+
+  // Format initialDate or use currentDate if initialDate is not provided
+  const formattedDate = initialDate ? formatDate(initialDate) : currentDate;
+
   const [formData, setFormData] = useState({
     quantity: initialQuantity || 0,
     note: initialNote || '',
-    date: initialDate || currentDate,
+    date: formattedDate,
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onTransactionSubmit(formData.quantity, formData.note, formData.date);
+    onTransactionSubmit(
+      formData.quantity,
+      formData.note,
+      formData.date,
+      transactionId,
+    );
   };
 
   return (
@@ -24,6 +45,8 @@ const TransactionForm = (props) => {
           type="number"
           name="quantity"
           value={formData.quantity}
+          min="0"
+          step="1"
           onChange={(e) =>
             setFormData({ ...formData, quantity: e.target.value })
           }

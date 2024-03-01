@@ -5,6 +5,7 @@ import {
   fetchGold,
   quickEditGold,
   addTransaction,
+  updateTransaction,
   deleteTransaction,
 } from '../apiClient';
 import NotLoggedIn from '../components/NotLoggedIn';
@@ -31,6 +32,7 @@ const Gold = (props) => {
   const [errors, setErrors] = useState([]);
   const [showTransactionForm, setShowTransactionForm] = useState(false);
   const [showQuickEditGold, setShowQuickEditGold] = useState(false);
+  const [showEditTransactionForm, setShowEditTransactionForm] = useState(false); // update this state with transaction id
 
   const getGold = async (id) => {
     try {
@@ -72,7 +74,36 @@ const Gold = (props) => {
     }
   };
 
-  //   const handleEditTransaction
+  const handleUpdateTransaction = async (
+    quantity,
+    note,
+    date,
+    transactionId,
+  ) => {
+    console.log('transactionId: ', transactionId);
+    try {
+      const response = await updateTransaction(
+        userId,
+        transactionId,
+        quantity,
+        note,
+        date,
+      );
+      console.log(
+        `Transaction ${transactionId} successfully updated: `,
+        response,
+      );
+      setTransactions(response.transactions);
+      setShowEditTransactionForm(false);
+    } catch (error) {
+      console.error(
+        `Error updating transaction ${transactionId}: `,
+        error.response?.data,
+      );
+      setErrors(error.response?.data?.errors?.map((err) => err.msg));
+    }
+  };
+
   const handleDeleteTransaction = async (transactionId) => {
     try {
       const response = await deleteTransaction(userId, transactionId);
@@ -134,11 +165,39 @@ const Gold = (props) => {
                 <ul className="transaction-list">
                   {transactions.toReversed().map((transaction) => (
                     <li key={transaction._id}>
-                      <p className="transaction-note">{transaction.note}</p>
-                      <p>Previous Gold balance: {transaction.prevQuantity}</p>
-                      <p className="transaction-date date">
-                        {formatDate(transaction.date)}
-                      </p>
+                      {showEditTransactionForm === transaction._id ? (
+                        <TransactionForm
+                          onTransactionSubmit={handleUpdateTransaction}
+                          initialNote={transaction.note}
+                          initialQuantity={transaction.prevQuantity}
+                          initialDate={transaction.date}
+                          transactionId={transaction._id}
+                        />
+                      ) : (
+                        <div className="transaction-detail">
+                          <p className="transaction-note">{transaction.note}</p>
+                          <p>
+                            Previous Gold balance: {transaction.prevQuantity}
+                          </p>
+                          <p className="transaction-date date">
+                            {formatDate(transaction.date)}
+                          </p>
+                        </div>
+                      )}
+                      <button
+                        className="delete"
+                        type="button"
+                        onClick={() =>
+                          // Set the current edit focus to current transaction otherwise hide edit form
+                          setShowEditTransactionForm((prevState) =>
+                            prevState === transaction._id
+                              ? false
+                              : transaction._id,
+                          )
+                        }
+                      >
+                        Edit
+                      </button>
                       <button
                         className="delete"
                         type="button"

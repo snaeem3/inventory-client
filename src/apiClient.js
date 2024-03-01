@@ -250,8 +250,6 @@ const quickEditGold = async (userId, newQuantity) => {
 };
 
 const addTransaction = async (userId, newQuantity, note, date) => {
-  console.log(newQuantity);
-  console.log(note);
   try {
     const response = await api.post(`/users/${userId}/gold`, {
       newQuantity,
@@ -262,6 +260,27 @@ const addTransaction = async (userId, newQuantity, note, date) => {
     return response.data;
   } catch (error) {
     console.error(`Error adding gold transaction: `, error.response.data);
+    throw error;
+  }
+};
+
+const updateTransaction = async (
+  userId,
+  transactionId,
+  newQuantity,
+  note,
+  date,
+) => {
+  try {
+    const response = await api.put(`/users/${userId}/gold/${transactionId}`, {
+      newQuantity,
+      note,
+      date,
+    });
+    console.log(`Update gold transaction successful: `, response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating gold transaction: `, error.response.data);
     throw error;
   }
 };
@@ -296,5 +315,6 @@ export {
   fetchGold,
   quickEditGold,
   addTransaction,
+  updateTransaction,
   deleteTransaction,
 };
