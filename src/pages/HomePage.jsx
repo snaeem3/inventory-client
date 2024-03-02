@@ -18,20 +18,23 @@ const HomePage = (props) => {
   };
 
   useEffect(() => {
-    getGold(userId);
+    if (isLoggedIn) getGold(userId);
     setLoading(false);
-  }, [userId]);
+  }, [userId, isLoggedIn]);
 
   return (
     <main>
       <h1>D&D Inventory Management</h1>
-      {!isLoggedIn && <NotLoggedIn />}
-      {isLoggedIn && (
+      {isLoggedIn ? (
         <>
           <h2>Hello {user}</h2>
-          <p>Gold: {gold}</p>
-          <p>Net worth:</p>
+          <div className="user-stats-container">
+            <p>Gold: {gold}</p>
+            <p>Net worth:</p>
+          </div>
         </>
+      ) : (
+        <NotLoggedIn />
       )}
     </main>
   );
