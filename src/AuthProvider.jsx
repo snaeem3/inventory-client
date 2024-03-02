@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
         handleLogout();
       }
     }
-  }, []);
+  }, [isLoggedIn]);
 
   const setAuthData = (decodedToken) => {
     setIsLoggedIn(true);
