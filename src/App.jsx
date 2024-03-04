@@ -6,6 +6,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import HomePage from './pages/HomePage';
 import Signup from './pages/Signup';
+import Settings from './pages/Settings';
 import Inventory from './pages/Inventory';
 import Gold from './pages/Gold';
 import Nav from './components/Nav';
@@ -25,6 +26,14 @@ function App() {
         <Route path="/log-in" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/sign-up" element={<Signup />} />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <Settings />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/inventory"
           element={

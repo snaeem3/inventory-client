@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
   const [userId, setUserId] = useState('');
+  const [profilePictureURL, setProfilePictureURL] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -34,6 +35,7 @@ export const AuthProvider = ({ children }) => {
     setUser(decodedToken.name);
     setIsAdmin(decodedToken.isAdmin);
     setUserId(decodedToken.userId);
+    setProfilePictureURL(decodedToken.profilePicture);
   };
 
   const login = useCallback(async (username, password) => {
@@ -59,6 +61,11 @@ export const AuthProvider = ({ children }) => {
     setUser('');
     setIsAdmin(false);
     setUserId('');
+    setProfilePictureURL('');
+  }, []);
+
+  const updateLocalProfilePictureURL = useCallback(async (newURL) => {
+    setProfilePictureURL(newURL);
   }, []);
 
   const authContextValue = useMemo(
@@ -69,8 +76,19 @@ export const AuthProvider = ({ children }) => {
       isAdmin,
       userId,
       user,
+      profilePictureURL,
+      updateLocalProfilePictureURL,
     }),
-    [isLoggedIn, login, logout, isAdmin, userId, user],
+    [
+      isLoggedIn,
+      login,
+      logout,
+      isAdmin,
+      userId,
+      user,
+      profilePictureURL,
+      updateLocalProfilePictureURL,
+    ],
   );
 
   return (

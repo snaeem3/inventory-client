@@ -3,17 +3,19 @@ import config from './config';
 
 const api = axios.create({
   baseURL: config.baseURL,
-  headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
 });
 
 // Request interceptor to set the Authorization header
 api.interceptors.request.use(
-  (config) => {
+  (configuration) => {
     const token = localStorage.getItem('token');
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      configuration.headers.Authorization = `Bearer ${token}`;
     }
-    return config;
+    return configuration;
   },
   (error) => Promise.reject(error),
 );
@@ -54,6 +56,32 @@ const handleLogout = async () => {
     console.log('Log out successful', response.data);
   } catch (error) {
     console.error('Error during logout: ', error.response.data);
+    throw error;
+  }
+};
+
+const fetchUserData = async (userId) => {
+  try {
+    const response = await api.get(`/users/${userId}`);
+    console.log(`Fetch user data successful: `, response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching user ${userId} data`);
+    throw error;
+  }
+};
+
+const updateUserAvatar = async (userId, formData) => {
+  try {
+    const response = await api.put(`/users/${userId}/avatar`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    console.log(`Update user avatar successful: `, response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating user ${userId} avatar`);
     throw error;
   }
 };
@@ -301,6 +329,8 @@ export {
   handleSignUp,
   handleLogin,
   handleLogout,
+  fetchUserData,
+  updateUserAvatar,
   fetchItems,
   fetchItem,
   createItem,

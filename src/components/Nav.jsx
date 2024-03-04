@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
 const Nav = (props) => {
-  const { user, isLoggedIn, isAdmin, logout } = useAuth();
+  const { user, isLoggedIn, isAdmin, logout, profilePictureURL } = useAuth();
   const [showUserLinks, setShowUserLinks] = useState(false);
 
   return (
@@ -32,7 +32,11 @@ const Nav = (props) => {
               className={showUserLinks ? `active` : `inactive`}
               onClick={() => setShowUserLinks((prevState) => !prevState)}
             >
-              {user}
+              {profilePictureURL ? (
+                <img src={profilePictureURL} alt="avatar" className="avatar" />
+              ) : (
+                user
+              )}
             </button>
             {showUserLinks && (
               <ul className="user-links">
