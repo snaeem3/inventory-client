@@ -11,18 +11,7 @@ import {
 import NotLoggedIn from '../components/NotLoggedIn';
 import Errors from '../components/Errors';
 import TransactionForm from '../components/TransactionForm';
-
-const dateOptions = {
-  // weekday: 'long',
-  year: 'numeric',
-  month: 'numeric',
-  day: 'numeric',
-};
-
-const formatDate = (inputDate) => {
-  const date = new Date(inputDate);
-  return date.toLocaleDateString('en-US', dateOptions);
-};
+import formatDate from '../utils/formatDate';
 
 const Gold = (props) => {
   const { userId, isLoggedIn } = useAuth();
