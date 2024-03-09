@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { fetchItem, updateItem, fetchCategories } from '../apiClient';
+import {
+  fetchItem,
+  updateItem,
+  updateItemPicture,
+  fetchCategories,
+} from '../apiClient';
 import NotLoggedIn from '../components/NotLoggedIn';
 import Loading from '../components/Loading';
 import ItemForm from '../components/ItemForm';
@@ -40,10 +45,15 @@ const UpdateItem = (props) => {
     setLoading(false);
   }, [itemId]);
 
-  const onSubmit = async (itemData) => {
+  const onSubmit = async (itemData, imageFormData) => {
     try {
       const response = await updateItem(itemId, itemData);
       console.log('Update Item successful: ', response);
+      let pictureResponse;
+      if (imageFormData)
+        pictureResponse = await updateItemPicture(itemId, imageFormData);
+      if (pictureResponse)
+        console.log('Update Item picture successful: ', pictureResponse);
       // getItemDetail(itemId);
       navigate(
         itemId ? `/catalog/item/${itemId}` : response.url ? response.url : '/',

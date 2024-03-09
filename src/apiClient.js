@@ -108,10 +108,10 @@ const fetchItem = async (id) => {
   }
 };
 
-const createItem = async (itemData) => {
+const createItem = async (itemData, itemPictureFormData) => {
   try {
-    console.log(itemData.category);
-    const response = await api.post(`/catalog/item/create`, {
+    console.log(itemData);
+    const response = await api.post(`/catalog/item`, {
       name: itemData.name,
       description: itemData.description,
       category: itemData.category,
@@ -120,6 +120,23 @@ const createItem = async (itemData) => {
       private: itemData.private,
     });
     console.log(`Create Item successful: `, response.data);
+
+    // Seperately handle item picture
+    if (itemPictureFormData) {
+      try {
+        const pictureResponse = await updateItemPicture(
+          response.data.item._id,
+          itemPictureFormData,
+        );
+        console.log('Item picture update successful: ', pictureResponse);
+        response.data.pictureResponse = pictureResponse;
+        return response.data;
+      } catch (error) {
+        console.error('Error updating item picture');
+        throw error;
+      }
+    }
+
     return response.data;
   } catch (error) {
     let errorMessage = 'An error occurred while creating item.';
@@ -129,7 +146,7 @@ const createItem = async (itemData) => {
         .map((errorObj) => errorObj.msg)
         .join(', ');
     }
-    console.error(`Error updating item: `, errorMessage.toString());
+    console.error(`Error creating item: `, errorMessage.toString());
     // throw new Error(error.response.data.errors);
     throw error.response.data.errors;
   }
@@ -158,6 +175,25 @@ const updateItem = async (itemId, itemData) => {
     console.error(`Error updating item: `, errorMessage.toString());
     // throw new Error(error.response.data.errors);
     throw error.response.data.errors;
+  }
+};
+
+const updateItemPicture = async (itemId, formData) => {
+  try {
+    const response = await api.put(
+      `/catalog/item/${itemId}/picture`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+    console.log(`Update item picture successful: `, response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating item ${itemId} picture`);
+    throw error;
   }
 };
 
@@ -335,6 +371,7 @@ export {
   fetchItem,
   createItem,
   updateItem,
+  updateItemPicture,
   deleteItem,
   fetchCategories,
   fetchInventory,

@@ -27,14 +27,15 @@ const CreateItem = (props) => {
     getCategories();
   }, []);
 
-  const onSubmit = async (itemData) => {
+  const onSubmit = async (itemData, imageFormData) => {
+    console.log('imageFormData: ', imageFormData);
     try {
-      const response = await createItem(itemData);
+      const response = await createItem(itemData, imageFormData);
       console.log('Create Item successful: ', response);
       navigate(response.url ? response.url : '/');
     } catch (error) {
       console.error('Error Creating Item', error);
-      setErrors(error.map((err) => err.msg));
+      setErrors(error.map((err) => err.msg || err.message));
     }
   };
 

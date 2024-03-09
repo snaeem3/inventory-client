@@ -4,6 +4,7 @@ import { addItemToInventory, fetchItem, deleteItem } from '../apiClient';
 import { useAuth } from '../hooks/useAuth';
 import Loading from '../components/Loading';
 import Errors from '../components/Errors';
+import formatDate from '../utils/formatDate';
 
 const ItemDetail = (props) => {
   const { itemId } = useParams();
@@ -62,6 +63,9 @@ const ItemDetail = (props) => {
       ) : (
         <div>
           <h1>{`${item.name}`}</h1>
+          {item.picture && (
+            <img src={item.picture} className="item-img" alt="item" />
+          )}
           <div>
             <p>Description: {item.description}</p>
             <p className="rarity">
@@ -78,7 +82,10 @@ const ItemDetail = (props) => {
             <p>Value: {item.value}</p>
             <p>Equippable: {item.equippable ? '✅' : '❌'}</p>
             {item.creator && item.creator.username && (
-              <p>Created by: {item.creator.username}</p>
+              <p>
+                Created by: {item.creator.username}{' '}
+                {item.createdAt && `on ${formatDate(item.createdAt)}`}
+              </p>
             )}
           </div>
           <button type="button" onClick={handleAddItemToInventory}>
@@ -86,6 +93,11 @@ const ItemDetail = (props) => {
           </button>
           {(isAdmin || item.creator?._id === userId) && (
             <>
+              <Link to={`/catalog/item/${itemId}/update`}>
+                <button type="button" className="edit-btn">
+                  Edit Item
+                </button>
+              </Link>
               <button
                 type="button"
                 className="delete-btn"

@@ -1,5 +1,28 @@
 import { useState, useEffect } from 'react';
 
+/**
+ * Enum representing different types of rarities.
+ * @typedef {'Unknown' | 'Common' | 'Uncommon' | 'Rare' | 'Very Rare' | 'Legendary'} Rarity
+ */
+
+/**
+ * An Item Form component for creating/updating item data.
+ *
+ * @component
+ * @param {Object} props - The component accepts onSubmit, initialData, and categories as props
+ * @param {function} props.onSubmit - Callback function to be run when the form is submitted
+ * @param {Object} props.initialData - Initial data for pre-filling form fields (optional)
+ * @param {string} [props.initialData.name] - The name of the item.
+ * @param {string} [props.initialData.description] - The description of the item.
+ * @param {Array<Object>} [props.initialData.category] - The categories of the item.
+ * @param {number} [props.initialData.value] - The gold value of the item
+ * @param {Rarity} [props.initialData.rarity] - The rarity of the item
+ * @param {boolean} [props.initialData.equippable] - Item is equippable
+ * @param {boolean} [props.initialData.private] - Item is private
+ * @param {string} [props.initialData.picture] - URL of item's picture
+ * @param {Object} props.categories - Catalog categories
+ * @returns {JSX.Element} The rendered form component.
+ */
 const ItemForm = (props) => {
   const { onSubmit, initialData, categories } = props;
   const [formData, setFormData] = useState({
@@ -11,6 +34,9 @@ const ItemForm = (props) => {
     equippable: false,
     private: false,
   });
+  const [initialImgURL, setInitialImgURL] = useState('');
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   useEffect(() => {
     if (initialData) {
@@ -32,6 +58,10 @@ const ItemForm = (props) => {
           updatedFormData[field] = initialData[field];
         }
       });
+
+      if (initialData.picture) {
+        setInitialImgURL(initialData.picture);
+      }
 
       setFormData(updatedFormData);
     }
@@ -63,13 +93,31 @@ const ItemForm = (props) => {
     }));
   };
 
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files ? e.target.files[0] : null;
+    setImage(selectedFile);
+
+    if (selectedFile) {
+      const previewURL = URL.createObjectURL(selectedFile);
+      setImagePreview(previewURL);
+    } else setImagePreview(null);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    let imgFormDataObj;
+    if (image) {
+      imgFormDataObj = new FormData();
+      imgFormDataObj.append('image', image);
+    }
+    onSubmit(formData, imgFormDataObj);
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      {initialImgURL && (
+        <img src={initialImgURL} className="item-img" alt="item" />
+      )}
       <label>
         Name:
         <input
@@ -150,6 +198,24 @@ const ItemForm = (props) => {
           checked={formData.private}
           onChange={handleChange}
         />
+      </label>
+      <label htmlFor="item-image">
+        Picture:
+        <input
+          type="file"
+          accept="image/*"
+          id="item-image"
+          onChange={handleFileChange}
+        />
+        {imagePreview && (
+          <img
+            src={imagePreview}
+            alt="item preview"
+            width={250}
+            height={250}
+            className="img-preview"
+          />
+        )}
       </label>
       <button type="submit">Submit</button>
     </form>
