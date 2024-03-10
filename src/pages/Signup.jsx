@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { handleSignUp } from '../apiClient';
+import Errors from '../components/Errors';
 
 const Signup = (props) => {
   const { isLoggedIn } = useAuth();
@@ -34,9 +35,8 @@ const SignUpForm = (props) => {
       console.log(response);
       setErrors([]);
     } catch (error) {
-      // Handle errors, e.g., display an error message
-      console.error('Error during registration:', error.response.data);
-      setErrors(error.response.data.errors);
+      console.error('Error during registration:', error.response.data.errors);
+      setErrors(error.response.data.errors.flat().map((err) => err.msg));
     }
   };
 
@@ -61,13 +61,7 @@ const SignUpForm = (props) => {
       <label htmlFor="confirmPassword">Confirm Password</label>
       <input name="confirmPassword" type="password" onChange={handleChange} />
       <button type="submit">Submit</button>
-      {errors && (
-        <ul style={{ color: 'red' }}>
-          {errors.map((error, index) => (
-            <li key={index}>{error.msg}</li>
-          ))}
-        </ul>
-      )}
+      {errors && <Errors errors={errors} />}
     </form>
   );
 };

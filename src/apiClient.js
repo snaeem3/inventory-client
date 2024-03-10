@@ -60,6 +60,17 @@ const handleLogout = async () => {
   }
 };
 
+const fetchUsers = async () => {
+  try {
+    const response = await api.get(`/users`);
+    console.log(`Fetch users successful: `, response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching user data`);
+    throw error;
+  }
+};
+
 const fetchUserData = async (userId) => {
   try {
     const response = await api.get(`/users/${userId}`);
@@ -365,6 +376,7 @@ export {
   handleSignUp,
   handleLogin,
   handleLogout,
+  fetchUsers,
   fetchUserData,
   updateUserAvatar,
   fetchItems,
