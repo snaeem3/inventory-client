@@ -291,6 +291,19 @@ const changeInventoryItem = async (
   }
 };
 
+const toggleEquipped = async (userId, itemId) => {
+  try {
+    const response = await api.put(
+      `/users/${userId}/inventory/${itemId}/equip-toggle`,
+    );
+    console.log('Toggle equippable item successful');
+    return response.data;
+  } catch (error) {
+    console.error(`Error toggling item: `, error);
+    throw error;
+  }
+};
+
 const deleteInventoryItem = async (userId, itemId) => {
   try {
     const response = await api.delete(`/users/${userId}/inventory/${itemId}`);
@@ -390,6 +403,7 @@ export {
   addItemToInventory,
   // updateInventory,
   changeInventoryItem,
+  toggleEquipped,
   deleteInventoryItem,
   fetchGold,
   quickEditGold,

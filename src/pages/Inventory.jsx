@@ -6,6 +6,7 @@ import NotLoggedIn from '../components/NotLoggedIn';
 import {
   fetchInventory,
   changeInventoryItem,
+  toggleEquipped,
   deleteInventoryItem,
   fetchUserData,
 } from '../apiClient';
@@ -46,12 +47,22 @@ const Inventory = (props) => {
       const response = await changeInventoryItem(userId, itemId, {
         newQuantity,
       });
-      console.log('Quantity change successful', response);
+      console.log('Quantity change successful: ', response);
       await loadInventoryItems();
     } catch (error) {
       console.error('Error changing quantity: ', error);
     }
   }
+
+  const handleEquipUnequip = async (itemId) => {
+    try {
+      const response = await toggleEquipped(userId, itemId);
+      console.log('Equip/Unequip successful: ', response);
+      await loadInventoryItems();
+    } catch (error) {
+      console.error('Error toggling equipped/unequipped: ', error);
+    }
+  };
 
   async function handleDeleteInventoryItem(itemId) {
     try {
@@ -64,8 +75,6 @@ const Inventory = (props) => {
   }
 
   useEffect(() => {
-    console.log('paramUserId: ', paramUserId);
-    console.log('readOnly: ', readOnly);
     if (paramUserId) {
       loadInventoryItems(paramUserId);
       loadUserName(paramUserId);
@@ -155,6 +164,14 @@ const Inventory = (props) => {
                           +
                         </button>
                       )}
+                      {inventoryItem.item.equippable && (
+                        <Equipped
+                          readOnly={readOnly}
+                          equipped={inventoryItem.equipped}
+                          itemId={inventoryItem.item._id}
+                          onClick={handleEquipUnequip}
+                        />
+                      )}
                       {!readOnly && (
                         <button
                           type="button"
@@ -177,6 +194,26 @@ const Inventory = (props) => {
         <NotLoggedIn />
       )}
     </main>
+  );
+};
+
+const Equipped = (props) => {
+  const { readOnly, equipped, itemId, onClick } = props;
+
+  return (
+    <div>
+      {readOnly ? (
+        <div>{equipped ? <p>Equipped</p> : <p>Not equipped</p>}</div>
+      ) : (
+        <button
+          type="button"
+          className="equip-btn"
+          onClick={() => onClick(itemId)}
+        >
+          {equipped ? 'Unequip' : 'Equip'}
+        </button>
+      )}
+    </div>
   );
 };
 
