@@ -12,6 +12,7 @@ const ItemDetail = (props) => {
   const [item, setItem] = useState({});
   const [loading, setLoading] = useState(true);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [addItemResponse, setAddItemResponse] = useState(''); // '' | 'loading' | 'success' | 'error'
   const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
 
@@ -21,7 +22,7 @@ const ItemDetail = (props) => {
         const data = await fetchItem(itemId);
         setItem(data);
       } catch (error) {
-        console.error('Error: ', error);
+        console.error('Error fetching items: ', error);
       } finally {
         setLoading(false);
       }
@@ -31,12 +32,15 @@ const ItemDetail = (props) => {
 
   const handleAddItemToInventory = async (e) => {
     e.preventDefault(); // prevent refresh
+    setAddItemResponse('loading');
     try {
       const response = await addItemToInventory(userId, itemId);
-      console.log('POST successful', response);
+      console.log('Add Item to Inventory successful', response);
+      setAddItemResponse('success');
       setErrors([]);
     } catch (error) {
       console.error('Error adding item to inventory', error);
+      setAddItemResponse('error');
       setErrors(error.response.data.errors.map((err) => err.message));
     }
   };
@@ -88,9 +92,14 @@ const ItemDetail = (props) => {
               </p>
             )}
           </div>
-          <button type="button" onClick={handleAddItemToInventory}>
-            Add to Inventory
-          </button>
+          <div className="add-to-inventory">
+            <button type="button" onClick={handleAddItemToInventory}>
+              Add to Inventory
+            </button>
+            {addItemResponse !== '' && (
+              <AddItemResponse result={addItemResponse} />
+            )}
+          </div>
           {(isAdmin || item.creator?._id === userId) && (
             <>
               <Link to={`/catalog/item/${itemId}/update`}>
@@ -127,6 +136,34 @@ const ItemDetail = (props) => {
       <Link to="/catalog">Return to Catalog</Link>
     </div>
   );
+};
+
+/**
+ * Component for displaying the response after adding an item to inventory.
+ * @param {Object} props - The component props.
+ * @param {string} [props.result='loading'] - The result of the add item operation. Possible values are:
+ *   - 'loading': Indicates that the operation is in progress.
+ *   - 'success': Indicates that the operation was successful.
+ *   - Any other string: Indicates that an error occurred during the operation.
+ * @param {string} [props.link='/inventory'] - The link to redirect to after a successful operation.
+ * @returns {JSX.Element} The rendered response message.
+ */
+const AddItemResponse = ({ result = 'loading', link = '/inventory' }) => {
+  switch (result) {
+    case 'loading': {
+      return <Loading />;
+    }
+    case 'success': {
+      return (
+        <p>
+          Item Added: <Link to={link}>View in Inventory</Link>
+        </p>
+      );
+    }
+    default: {
+      return <p>Error adding to inventory</p>;
+    }
+  }
 };
 
 export default ItemDetail;
