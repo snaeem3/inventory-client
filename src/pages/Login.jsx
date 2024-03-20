@@ -1,6 +1,18 @@
 import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, Link } from 'react-router-dom';
+import { useTheme } from '@mui/material/styles';
+import {
+  Avatar,
+  CssBaseline,
+  Container,
+  Typography,
+  Box,
+  TextField,
+  Button,
+} from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useAuth } from '../hooks/useAuth';
+import Errors from '../components/Errors';
 
 const Login = (props) => {
   const { isLoggedIn } = useAuth();
@@ -8,10 +20,28 @@ const Login = (props) => {
     return <Navigate to="/" />;
   }
   return (
-    <>
-      <h1>Log In</h1>
-      <LogInForm />
-    </>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Log In
+        </Typography>
+        <LogInForm />
+        <Link to="/sign-up" variant="body2">
+          Don't have an account? Sign Up
+        </Link>
+      </Box>
+    </Container>
   );
 };
 
@@ -48,20 +78,35 @@ const LogInForm = (props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="username">Username</label>
-      <input
+    <Box component="form" onSubmit={handleSubmit}>
+      {/* <label htmlFor="username">Username</label> */}
+      <TextField
         name="username"
-        placeholder="username@email.com"
+        // placeholder="username@email.com"
+        label="User name"
         type="text"
+        required
+        autoFocus
         onChange={handleChange}
+        fullWidth
+        margin="normal"
       />
-      <label htmlFor="password">Password</label>
-      <input name="password" type="password" onChange={handleChange} />
-      <button type="submit">Submit</button>
+      {/* <label htmlFor="password">Password</label> */}
+      <TextField
+        name="password"
+        type="password"
+        required
+        label="Password"
+        onChange={handleChange}
+        fullWidth
+        margin="normal"
+      />
+      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+        Submit
+      </Button>
 
-      {errors && <p className="error">{errors}</p>}
-    </form>
+      {errors && <Errors errors={errors} />}
+    </Box>
   );
 };
 

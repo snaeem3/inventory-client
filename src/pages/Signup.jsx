@@ -1,5 +1,17 @@
 import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
+import { useTheme } from '@mui/material/styles';
+import {
+  Avatar,
+  CssBaseline,
+  Container,
+  Typography,
+  Box,
+  Grid,
+  TextField,
+  Button,
+} from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useAuth } from '../hooks/useAuth';
 import { handleSignUp } from '../apiClient';
 import Errors from '../components/Errors';
@@ -10,10 +22,28 @@ const Signup = (props) => {
     return <Navigate to="/" />;
   }
   return (
-    <>
-      <h1>Sign Up</h1>
-      <SignUpForm />
-    </>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign up
+        </Typography>
+        <SignUpForm />
+        <Link to="/log-in" variant="body2">
+          Already have an account? Log In
+        </Link>
+      </Box>
+    </Container>
   );
 };
 
@@ -48,21 +78,44 @@ const SignUpForm = (props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="username">Username</label>
-      <input
+    <Box component="form" onSubmit={handleSubmit}>
+      {/* <label htmlFor="username">Username</label> */}
+      <TextField
         name="username"
-        placeholder="username@email.com"
+        // placeholder="username@email.com"
+        label="User name"
         type="text"
+        required
+        autoFocus
         onChange={handleChange}
+        fullWidth
+        margin="normal"
       />
-      <label htmlFor="password">Password</label>
-      <input name="password" type="password" onChange={handleChange} />
-      <label htmlFor="confirmPassword">Confirm Password</label>
-      <input name="confirmPassword" type="password" onChange={handleChange} />
-      <button type="submit">Submit</button>
+      {/* <label htmlFor="password">Password</label> */}
+      <TextField
+        name="password"
+        label="Password"
+        type="password"
+        required
+        onChange={handleChange}
+        fullWidth
+        margin="normal"
+      />
+      {/* <label htmlFor="confirmPassword">Confirm Password</label> */}
+      <TextField
+        name="confirmPassword"
+        label="Confirm Password"
+        type="password"
+        required
+        onChange={handleChange}
+        fullWidth
+        margin="normal"
+      />
+      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+        Submit
+      </Button>
       {errors && <Errors errors={errors} />}
-    </form>
+    </Box>
   );
 };
 
