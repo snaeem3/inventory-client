@@ -16,6 +16,9 @@ const Nav = (props) => {
           <li>
             <Link to="/catalog">Item Catalog</Link>
           </li>
+          <li>
+            <Link to="/users">Users</Link>
+          </li>
         </ul>
         {isLoggedIn ? (
           <div className="logged-in-nav">
@@ -33,7 +36,7 @@ const Nav = (props) => {
               onClick={() => setShowUserLinks((prevState) => !prevState)}
             >
               {profilePictureURL ? (
-                <img src={profilePictureURL} alt="avatar" className="avatar" />
+                <img src={profilePictureURL} alt={user} className="avatar" />
               ) : (
                 user
               )}

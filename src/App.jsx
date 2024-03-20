@@ -16,6 +16,7 @@ import NotFound from './components/NotFound';
 import CreateItem from './pages/CreateItem';
 import UpdateItem from './pages/UpdateItem';
 import Users from './pages/Users';
+import User from './pages/User';
 
 function App() {
   return (
@@ -79,7 +80,7 @@ function App() {
           }
         />
         <Route path="/users" element={<Users />} />
-        {/* <Route path="/users/:userId" element={<User />} /> */}
+        <Route path="/users/:userId" element={<User />} />
         <Route
           path="/users/:userId/inventory"
           element={<Inventory readOnly />}
