@@ -7,6 +7,11 @@ import Signup from './pages/Signup.jsx';
 import Login from './pages/Login.jsx';
 import './index.css';
 
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -24,9 +29,6 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    {/* <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider> */}
     <BrowserRouter>
       <App />
     </BrowserRouter>
