@@ -1,15 +1,17 @@
+import { Box, Typography, Alert } from '@mui/material';
+
 const Errors = (props) => {
   const { errors } = props;
 
   return (
-    <>
-      <h2>Errors:</h2>
-      <ul>
-        {errors.map((error) => (
-          <li className="error">{error}</li>
-        ))}
-      </ul>
-    </>
+    <Box margin="normal">
+      {/* <Typography component="h2">Errors:</Typography> */}
+      {/* <ul> */}
+      {errors.map((error) => (
+        <Alert severity="error">{error}</Alert>
+      ))}
+      {/* </ul> */}
+    </Box>
   );
 };
 

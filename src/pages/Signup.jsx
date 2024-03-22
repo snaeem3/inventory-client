@@ -39,9 +39,9 @@ const Signup = (props) => {
           Sign up
         </Typography>
         <SignUpForm />
-        <Link to="/log-in" variant="body2">
-          Already have an account? Log In
-        </Link>
+        <Typography variant="body1" sx={{ p: 1 }}>
+          <Link to="/log-in">Already have an account? Log In</Link>
+        </Typography>
       </Box>
     </Container>
   );
