@@ -8,10 +8,14 @@ import {
   Stack,
   Paper,
   Button,
+  Tooltip,
+  IconButton,
 } from '@mui/material';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import BackpackIcon from '@mui/icons-material/Backpack';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import PaidIcon from '@mui/icons-material/Paid';
 import { useAuth } from '../hooks/useAuth';
 import { fetchUserData } from '../apiClient';
 import NotLoggedIn from '../components/NotLoggedIn';
@@ -49,25 +53,73 @@ const HomePage = (props) => {
     <Container component="main" className="home-page">
       {isLoggedIn ? (
         <>
-          <h1>D&D Inventory Management</h1>
-          <h2 className="welcome-back">Welcome Back {userName}</h2>
+          <Typography variant="h3" sx={{ py: { xs: 2, md: 4 } }}>
+            D&D Inventory Management
+          </Typography>
+          <Typography variant="h4" className="welcome-back" sx={{ pb: 4 }}>
+            Welcome Back {userName}
+          </Typography>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={{ xs: 1, sm: 2, md: 4 }}
+            sx={{ justifyContent: 'center', py: 2 }}
+            className="links"
+          >
+            <Link to="/inventory">
+              <Tooltip title="View your Inventory" arrow placement="top">
+                <IconButton
+                  aria-label="View your Inventory"
+                  sx={{
+                    p: 0,
+                    ':hover': {
+                      bgcolor: 'primary.main',
+                      color: 'white',
+                    },
+                  }}
+                >
+                  <BackpackIcon sx={{ fontSize: 180 }} />
+                </IconButton>
+              </Tooltip>
+            </Link>
+            <Link to="/gold">
+              <Tooltip title="View Gold detail" arrow placement="top">
+                <IconButton
+                  aria-label="View Gold detail"
+                  sx={{
+                    p: 0,
+                    ':hover': {
+                      bgcolor: 'primary.main',
+                      color: 'white',
+                    },
+                  }}
+                >
+                  <PaidIcon sx={{ fontSize: 180 }} />
+                </IconButton>
+              </Tooltip>
+            </Link>
+            <Link to="/catalog">
+              <Tooltip title="View Item Catalog" arrow placement="top">
+                <IconButton
+                  aria-label="View Item Catalog"
+                  sx={{
+                    p: 0,
+                    ':hover': {
+                      bgcolor: 'primary.main',
+                      color: 'white',
+                    },
+                  }}
+                >
+                  <MenuBookIcon sx={{ fontSize: 180 }} />
+                </IconButton>
+              </Tooltip>
+            </Link>
+          </Stack>
           <UserOverview
             name={userName}
             inventoryItems={user.itemInventory}
             gold={user.gold?.quantity}
             netWorth={user.netWorth}
           />
-          <div className="links">
-            <Link to="/inventory">
-              <button type="button">View your Inventory</button>
-            </Link>
-            <Link to="/gold">
-              <button type="button">View your Gold</button>
-            </Link>
-            <Link to="/catalog">
-              <button type="button">View the Item Catalog</button>
-            </Link>
-          </div>
         </>
       ) : (
         <Hero />

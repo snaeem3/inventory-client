@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { Container, Box, Typography, Avatar, Button } from '@mui/material';
+import BackpackIcon from '@mui/icons-material/Backpack';
 import { useAuth } from '../hooks/useAuth';
 import { fetchUserData } from '../apiClient';
 import Loading from '../components/Loading';
@@ -27,9 +29,38 @@ const User = (props) => {
   }, [paramUserId]);
 
   return (
-    <main className="user-page">
-      <h1>{user.name}</h1>
-      {user.profilePicture && <img src={user.profilePicture} alt="avatar" />}
+    <Container component="main" className="user-page">
+      <Box
+        sx={{
+          py: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Typography component="h1" variant="h3">
+          {user.username}
+        </Typography>
+        {user.profilePicture && (
+          <Avatar
+            src={user.profilePicture}
+            alt="avatar"
+            sx={{ width: 256, height: 256 }}
+          />
+        )}
+      </Box>
+      <div className="user-links">
+        <Link to={`/users/${paramUserId}/inventory`}>
+          <Button
+            type="button"
+            size="large"
+            startIcon={<BackpackIcon />}
+            sx={{ py: 2 }}
+          >
+            <Typography variant="h5">View Inventory</Typography>
+          </Button>
+        </Link>
+      </div>
       <UserOverview
         name={user.name}
         inventoryItems={user.itemInventory}
@@ -37,10 +68,7 @@ const User = (props) => {
         gold={user.gold?.quantity}
         netWorth={user.netWorth}
       />
-      <div className="user-links">
-        <Link to={`/users/${paramUserId}/inventory`}>View Inventory</Link>
-      </div>
-    </main>
+    </Container>
   );
 };
 
