@@ -40,11 +40,25 @@ const handleLogin = async (formData) => {
   try {
     const response = await api.post('/auth/log-in', formData);
 
-    console.log('Log in successful', response.data);
+    console.log('Log in successful: ', response.data);
     return response.data;
   } catch (error) {
     // Handle errors, e.g., display an error message
-    console.error('Error during login:', error.response.data);
+    console.error('Error during login: ', error.response.data);
+    throw error;
+  }
+};
+
+const handleGuestLogin = async () => {
+  const guestUserName = 'Guest';
+  const guestPassword = 'GuestPassword';
+  const guestFormData = { username: guestUserName, password: guestPassword };
+  try {
+    const response = await handleLogin(guestFormData);
+    console.log('Guest Log in successful: ', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error logging in as guest: ', error.response.data);
     throw error;
   }
 };
@@ -388,6 +402,7 @@ const deleteTransaction = async (userId, transactionId) => {
 export {
   handleSignUp,
   handleLogin,
+  handleGuestLogin,
   handleLogout,
   fetchUsers,
   fetchUserData,

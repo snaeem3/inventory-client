@@ -6,7 +6,7 @@ import React, {
   useCallback,
 } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import { handleLogin, handleLogout } from './apiClient';
+import { handleLogin, handleGuestLogin, handleLogout } from './apiClient';
 
 export const AuthContext = createContext();
 
@@ -49,6 +49,17 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  const guestLogin = useCallback(async () => {
+    try {
+      const response = await handleGuestLogin();
+      localStorage.setItem('token', response.accessToken);
+      setAuthData(response.user);
+    } catch (error) {
+      console.error('Error during guest login: ', error);
+      throw error;
+    }
+  }, []);
+
   const logout = useCallback(async () => {
     try {
       await handleLogout();
@@ -72,6 +83,7 @@ export const AuthProvider = ({ children }) => {
     () => ({
       isLoggedIn,
       login,
+      guestLogin,
       logout,
       isAdmin,
       userId,
@@ -82,6 +94,7 @@ export const AuthProvider = ({ children }) => {
     [
       isLoggedIn,
       login,
+      guestLogin,
       logout,
       isAdmin,
       userId,

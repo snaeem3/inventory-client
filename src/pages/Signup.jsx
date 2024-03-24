@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Navigate, Link } from 'react-router-dom';
-import { useTheme } from '@mui/material/styles';
+import { Navigate, Link, useNavigate } from 'react-router-dom';
 import {
   Avatar,
   CssBaseline,
@@ -53,6 +52,7 @@ const SignUpForm = (props) => {
     password: '',
     confirmPassword: '',
   });
+  const navigate = useNavigate();
 
   const [errors, setErrors] = useState(null);
 
@@ -61,9 +61,9 @@ const SignUpForm = (props) => {
 
     try {
       const response = await handleSignUp(formData);
-
-      console.log(response);
+      console.log('Submit Signup successful: ', response);
       setErrors([]);
+      navigate('/log-in', { state: { username: formData.username } });
     } catch (error) {
       console.error('Error during registration:', error.response.data.errors);
       setErrors(error.response.data.errors.flat().map((err) => err.msg));

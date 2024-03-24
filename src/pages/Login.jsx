@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Navigate, useNavigate, Link } from 'react-router-dom';
-import { useTheme } from '@mui/material/styles';
+import { Navigate, useNavigate, Link, useLocation } from 'react-router-dom';
 import {
   Avatar,
   CssBaseline,
@@ -46,10 +45,12 @@ const Login = (props) => {
 };
 
 const LogInForm = (props) => {
+  const location = useLocation();
+  const username = location?.state?.username; // if user just signed up
   const { login } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: '',
+    username: username || '',
     password: '',
   });
 
@@ -85,8 +86,9 @@ const LogInForm = (props) => {
         // placeholder="username@email.com"
         label="User name"
         type="text"
+        value={formData.username}
         required
-        autoFocus
+        autoFocus={!username}
         onChange={handleChange}
         fullWidth
         margin="normal"
@@ -97,6 +99,7 @@ const LogInForm = (props) => {
         type="password"
         required
         label="Password"
+        autoFocus={!!username}
         onChange={handleChange}
         fullWidth
         margin="normal"
