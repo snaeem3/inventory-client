@@ -1,10 +1,17 @@
 import React from 'react';
 
+import { Box, CircularProgress, Typography } from '@mui/material';
+
 const Loading = ({ text = 'Loading' }) => (
-  <div className="loading">
-    <p className="loading-spinner" />
-    <p className="loading-text">{text}</p>
-  </div>
+  <Box
+    sx={{ display: 'flex', alignItems: 'center', gap: 2 }}
+    className="loading"
+  >
+    <CircularProgress color="secondary" />
+    <Typography variant="h4" className="loading-text">
+      {text}
+    </Typography>
+  </Box>
 );
 
 export default Loading;
