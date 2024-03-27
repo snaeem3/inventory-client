@@ -1,5 +1,31 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import {
+  Container,
+  Box,
+  Typography,
+  Stack,
+  Grid,
+  Paper,
+  Button,
+  Chip,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Alert,
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
+import AddModeratorIcon from '@mui/icons-material/AddModerator';
+import GppBadIcon from '@mui/icons-material/GppBad';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { addItemToInventory, fetchItem, deleteItem } from '../apiClient';
 import { useAuth } from '../hooks/useAuth';
 import Loading from '../components/Loading';
@@ -61,80 +87,172 @@ const ItemDetail = (props) => {
   };
 
   return (
-    <div>
+    <Container component="main">
       {loading ? (
-        <Loading />
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          minHeight="100vh"
+        >
+          <Loading />
+        </Box>
       ) : (
-        <div>
-          <h1>{`${item.name}`}</h1>
-          {item.picture && (
-            <img src={item.picture} className="item-img" alt="item" />
-          )}
-          <div>
-            <p>Description: {item.description}</p>
-            <p className="rarity">
-              Rarity: <span className={item.rarity}>{item.rarity}</span>
-            </p>
-            <div>
-              Categories:
-              <ul>
-                {item.category.map((itemCategory) => (
-                  <li key={itemCategory._id}>{itemCategory.name}</li>
-                ))}
-              </ul>
-            </div>
-            <p>Value: {item.value}</p>
-            <p>Equippable: {item.equippable ? '✅' : '❌'}</p>
-            {item.creator && item.creator.username && (
-              <p>
-                Created by: {item.creator.username}{' '}
-                {item.createdAt && `on ${formatDate(item.createdAt)}`}
-              </p>
+        <Stack spacing={2}>
+          <Typography
+            variant="h2"
+            sx={{ wordWrap: 'break-word' }}
+          >{`${item.name}`}</Typography>
+          <Grid
+            container
+            direction={{ xs: 'column', md: 'row-reverse' }}
+            justifyContent="center"
+            alignItems="center"
+          >
+            {item.picture && (
+              <Grid item sx={{ width: '50%', overflow: 'hidden' }}>
+                <Paper
+                  sx={{ width: '100%', height: '100%', overflow: 'hidden' }}
+                >
+                  <img
+                    src={item.picture}
+                    className="item-img"
+                    alt="item"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
+                  />
+                </Paper>
+              </Grid>
             )}
-          </div>
-          <div className="add-to-inventory">
-            <button type="button" onClick={handleAddItemToInventory}>
-              Add to Inventory
-            </button>
-            {addItemResponse !== '' && (
-              <AddItemResponse result={addItemResponse} />
-            )}
-          </div>
-          {(isAdmin || item.creator?._id === userId) && (
-            <>
-              <Link to={`/catalog/item/${itemId}/update`}>
-                <button type="button" className="edit-btn">
-                  Edit Item
-                </button>
-              </Link>
-              <button
-                type="button"
-                className="delete-btn"
-                onClick={handleDelete}
-              >
-                Delete Item
-              </button>
-              {showDeleteConfirmation && (
-                <div className="confirmation-modal">
-                  <p>Are you sure you want to delete this item?</p>
-                  <button type="button" onClick={confirmDelete}>
-                    Yes
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowDeleteConfirmation(false)}
+            <Grid item>
+              <Stack spacing={2}>
+                <Accordion defaultExpanded>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1-content"
+                    id="panel1-header"
                   >
-                    No
-                  </button>
-                </div>
+                    <Typography>Description</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography>{item.description}</Typography>
+                  </AccordionDetails>
+                </Accordion>
+                <Box>
+                  <Typography variant="h5">Categories:</Typography>
+                  <Grid container sx={{ justifyContent: 'center' }} spacing={1}>
+                    {item.category.map((itemCategory) => (
+                      <Grid item key={itemCategory._id}>
+                        <Chip label={itemCategory.name} />
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
+                <Stack
+                  direction="row"
+                  justifyContent="center"
+                  gap={2}
+                  alignItems="center"
+                  className="rarity"
+                >
+                  <Typography variant="h5">Rarity:</Typography>{' '}
+                  <Typography className={item.rarity}>{item.rarity}</Typography>
+                </Stack>
+                <Stack
+                  direction="row"
+                  justifyContent="center"
+                  gap={2}
+                  alignItems="center"
+                  className="rarity"
+                >
+                  <Typography variant="h5">Value: </Typography>
+                  <Typography variant="body1">{item.value}</Typography>
+                </Stack>
+                {item.equippable && (
+                  <Chip
+                    label="Equippable"
+                    color="success"
+                    icon={<AddModeratorIcon />}
+                  />
+                )}
+                {item.creator && item.creator.username && (
+                  <Typography>
+                    Created by: {item.creator.username}{' '}
+                    {item.createdAt && `on ${formatDate(item.createdAt)}`}
+                  </Typography>
+                )}
+              </Stack>
+              <div className="add-to-inventory">
+                <Button
+                  type="button"
+                  onClick={handleAddItemToInventory}
+                  startIcon={<LibraryAddIcon />}
+                >
+                  Add to Inventory
+                </Button>
+                {addItemResponse !== '' && (
+                  <AddItemResponse result={addItemResponse} />
+                )}
+              </div>
+              {(isAdmin || item.creator?._id === userId) && (
+                <>
+                  <Link to={`/catalog/item/${itemId}/update`}>
+                    <Button
+                      type="button"
+                      startIcon={<EditIcon />}
+                      className="edit-btn"
+                    >
+                      Edit Item
+                    </Button>
+                  </Link>
+                  <Button
+                    type="button"
+                    className="delete-btn"
+                    onClick={handleDelete}
+                    startIcon={<DeleteForeverIcon />}
+                    color="error"
+                  >
+                    Delete Item
+                  </Button>
+
+                  <Dialog
+                    className="confirmation-modal"
+                    open={showDeleteConfirmation}
+                  >
+                    <DialogTitle>
+                      Are you sure you want to delete this item?
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText>
+                        This action can not be undone
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button type="button" onClick={confirmDelete}>
+                        Yes
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={() => setShowDeleteConfirmation(false)}
+                      >
+                        No
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                </>
               )}
-            </>
-          )}
-        </div>
+            </Grid>
+          </Grid>
+        </Stack>
       )}
       {errors.length > 0 && <Errors errors={errors} />}
-      <Link to="/catalog">Return to Catalog</Link>
-    </div>
+      <Typography>
+        <Link to="/catalog">Return to Catalog</Link>
+      </Typography>
+    </Container>
   );
 };
 
@@ -155,13 +273,16 @@ const AddItemResponse = ({ result = 'loading', link = '/inventory' }) => {
     }
     case 'success': {
       return (
-        <p>
+        <Alert
+          severity="success"
+          icon={<LibraryAddCheckIcon fontSize="inherit" />}
+        >
           Item Added: <Link to={link}>View in Inventory</Link>
-        </p>
+        </Alert>
       );
     }
     default: {
-      return <p>Error adding to inventory</p>;
+      return <Alert severity="error">Error adding to inventory</Alert>;
     }
   }
 };
