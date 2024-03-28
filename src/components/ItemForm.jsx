@@ -1,4 +1,21 @@
 import { useState, useEffect } from 'react';
+import {
+  FormGroup,
+  FormControl,
+  FormControlLabel,
+  Container,
+  Box,
+  Typography,
+  Stack,
+  Button,
+  TextField,
+  Checkbox,
+  Select,
+  InputLabel,
+  MenuItem,
+  Switch,
+} from '@mui/material';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 
 /**
  * Enum representing different types of rarities.
@@ -114,111 +131,155 @@ const ItemForm = (props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {initialImgURL && (
-        <img src={initialImgURL} className="item-img" alt="item" />
-      )}
-      <label>
-        Name:
-        <input
+    <Container component="form" onSubmit={handleSubmit} maxWidth="xs">
+      <Stack spacing={2}>
+        {initialImgURL && (
+          <img src={initialImgURL} className="item-img" alt="item" />
+        )}
+        <TextField
+          label="Name"
           type="text"
           name="name"
           value={formData.name}
           onChange={handleChange}
           required
+          autoFocus
         />
-      </label>
-      <label>
-        Description:
-        <textarea
+        <TextField
+          label="Description"
           name="description"
           value={formData.description}
           onChange={handleChange}
           required
+          multiline
         />
-      </label>
-      <fieldset>
-        <legend>Categories:</legend>
-        {categories.map((category) => (
-          <div key={category._id}>
-            <input
-              type="checkbox"
-              name={category._id}
-              id={category._id}
-              checked={formData.category.some(
-                (formDataCategory) => formDataCategory._id === category._id,
-              )}
-              onChange={handleCategoryChange}
-            />
-            <label htmlFor={category._id}>{category.name}</label>
-          </div>
-        ))}
-      </fieldset>
-      <label>
-        Value (gold):
-        <input
-          type="number"
-          name="value"
-          value={formData.value}
-          onChange={handleChange}
-          min="0"
-        />
-      </label>
-      <label>
-        Rarity:
-        <select name="rarity" value={formData.rarity} onChange={handleChange}>
-          {[
-            'Unknown',
-            'Common',
-            'Uncommon',
-            'Rare',
-            'Very Rare',
-            'Legendary',
-          ].map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label>
-        Equippable:
-        <input
-          type="checkbox"
-          name="equippable"
-          checked={formData.equippable}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Private:
-        <input
-          type="checkbox"
-          name="private"
-          checked={formData.private}
-          onChange={handleChange}
-        />
-      </label>
-      <label htmlFor="item-image">
-        Picture:
-        <input
-          type="file"
-          accept="image/*"
-          id="item-image"
-          onChange={handleFileChange}
-        />
-        {imagePreview && (
-          <img
-            src={imagePreview}
-            alt="item preview"
-            width={250}
-            height={250}
-            className="img-preview"
+        <Box component="fieldset">
+          <legend>
+            <Typography>Categories:</Typography>
+          </legend>
+          <FormGroup>
+            {categories.map((category) => (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    id={category._id}
+                    checked={formData.category.some(
+                      (formDataCategory) =>
+                        formDataCategory._id === category._id,
+                    )}
+                    onChange={handleCategoryChange}
+                  />
+                }
+                label={category.name}
+                key={category._id}
+              />
+            ))}
+          </FormGroup>
+        </Box>
+        <label>
+          <Typography>Value (gold):</Typography>
+          <input
+            type="number"
+            name="value"
+            value={formData.value}
+            onChange={handleChange}
+            min="0"
+            step="1"
+            style={{
+              padding: '.5rem',
+              border: '2px solid #ccc',
+              borderRadius: '.5rem',
+              fontSize: '1rem',
+              transition: 'border-color 0.3s ease',
+              textAlign: 'center',
+            }}
           />
+        </label>
+        {/* <TextField
+        type="number"
+        label="Gold Value"
+        variant="outlined"
+        InputProps={{ inputProps: { min: 0 } }} // Optional: Set minimum value
+        style={{ width: '100%' }} // Optional: Adjust width as needed
+        onKeyDown={(e) => {
+          if (e.key === 'e' || e.key === '-' || e.key === '+' || e.key === '.')
+            e.preventDefault();
+        }}
+      /> */}
+        <FormControl>
+          <InputLabel id="rarity-label">Rarity</InputLabel>
+          <Select
+            name="rarity"
+            label="Rarity"
+            value={formData.rarity}
+            onChange={handleChange}
+          >
+            {[
+              'Unknown',
+              'Common',
+              'Uncommon',
+              'Rare',
+              'Very Rare',
+              'Legendary',
+            ].map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControlLabel
+          control={
+            <Switch
+              name="equippable"
+              checked={formData.equippable}
+              onChange={handleChange}
+              color="primary"
+            />
+          }
+          label="Equippable"
+          sx={{ justifyContent: 'center' }}
+        />
+        <FormControlLabel
+          control={
+            <Switch
+              name="private"
+              checked={formData.private}
+              onChange={handleChange}
+              color="primary"
+            />
+          }
+          disabled
+          label="Private"
+          sx={{ justifyContent: 'center' }}
+        />
+
+        <Button component="label" startIcon={<AddPhotoAlternateIcon />}>
+          Upload Image
+          <input
+            type="file"
+            accept="image/*"
+            id="item-image"
+            onChange={handleFileChange}
+            hidden
+          />
+        </Button>
+        {imagePreview && (
+          <Box>
+            <img
+              src={imagePreview}
+              alt="item preview"
+              className="img-preview"
+              style={{ height: '100%', width: '100%', objectFit: 'contain' }}
+            />
+          </Box>
         )}
-      </label>
-      <button type="submit">Submit</button>
-    </form>
+        <Button type="submit" variant="contained" size="large">
+          Submit
+        </Button>
+      </Stack>
+    </Container>
   );
 };
 
