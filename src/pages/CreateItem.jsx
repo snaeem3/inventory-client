@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Container, Typography } from '@mui/material';
 import { useAuth } from '../hooks/useAuth';
 import { createItem, fetchCategories } from '../apiClient';
 import Loading from '../components/Loading';
@@ -40,15 +41,17 @@ const CreateItem = (props) => {
   };
 
   return (
-    <main>
-      <h1>Create Item</h1>
+    <Container component="main">
+      <Typography variant="h2" sx={{ py: 2 }}>
+        Create Item
+      </Typography>
       {loading ? (
         <Loading />
       ) : (
         <ItemForm onSubmit={onSubmit} categories={categories} />
       )}
       {errors.length > 0 && <Errors errors={errors} />}
-    </main>
+    </Container>
   );
 };
 

@@ -249,7 +249,7 @@ const ItemDetail = (props) => {
         </Stack>
       )}
       {errors.length > 0 && <Errors errors={errors} />}
-      <Typography>
+      <Typography sx={{ my: 1, py: 1 }}>
         <Link to="/catalog">Return to Catalog</Link>
       </Typography>
     </Container>

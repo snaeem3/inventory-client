@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { Container, Typography } from '@mui/material';
 import { useAuth } from '../hooks/useAuth';
 import {
   fetchItem,
@@ -65,8 +66,10 @@ const UpdateItem = (props) => {
   };
 
   return (
-    <main>
-      <h1>Update Item</h1>
+    <Container component="main">
+      <Typography variant="h2" sx={{ py: 2 }}>
+        Update Item
+      </Typography>
       {loading ? (
         <Loading />
       ) : (
@@ -77,7 +80,10 @@ const UpdateItem = (props) => {
         />
       )}
       {errors.length > 0 && <Errors errors={errors} />}
-    </main>
+      <Typography sx={{ my: 1, py: 1 }}>
+        <Link to={`/catalog/item/${itemId}`}>Return to Item Detail</Link>
+      </Typography>
+    </Container>
   );
 };
 

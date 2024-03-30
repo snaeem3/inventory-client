@@ -4,7 +4,12 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 
 const Loading = ({ text = 'Loading' }) => (
   <Box
-    sx={{ display: 'flex', alignItems: 'center', gap: 2 }}
+    sx={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 2,
+    }}
     className="loading"
   >
     <CircularProgress color="secondary" />
