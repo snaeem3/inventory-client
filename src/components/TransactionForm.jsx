@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Box, Grid, Typography, Button, TextField } from '@mui/material';
+import SaveIcon from '@mui/icons-material/Save';
 
 const TransactionForm = (props) => {
   const {
@@ -38,41 +40,57 @@ const TransactionForm = (props) => {
   };
 
   return (
-    <form className="transaction-form" onSubmit={handleSubmit}>
-      <label htmlFor="quantity">
-        New Quantity:
-        <input
-          type="number"
-          name="quantity"
-          value={formData.quantity}
-          min="0"
-          step="1"
-          onChange={(e) =>
-            setFormData({ ...formData, quantity: e.target.value })
-          }
-        />
-      </label>
-      <label htmlFor="message">
-        Note:
-        <input
-          type="text"
-          name="note"
-          placeholder="Sold my cut emerald"
-          value={formData.note}
-          onChange={(e) => setFormData({ ...formData, note: e.target.value })}
-        />
-      </label>
-      <label htmlFor="transaction-date">
-        Transaction Date:
-        <input
-          type="date"
-          name="transaction-date"
-          value={formData.date}
-          onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-        />
-      </label>
-      <button type="submit">Submit Transaction</button>
-    </form>
+    <Box
+      component="form"
+      className="transaction-form"
+      onSubmit={handleSubmit}
+      sx={{ p: 2, bgcolor: 'grey.300' }}
+    >
+      <Grid container>
+        <Grid item xs={12} md={8}>
+          <TextField
+            type="text"
+            name="note"
+            label="Note"
+            placeholder="Sold my cut emerald"
+            value={formData.note}
+            onChange={(e) => setFormData({ ...formData, note: e.target.value })}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <label htmlFor="quantity">
+            <Typography>New Quantity:</Typography>
+            <input
+              type="number"
+              name="quantity"
+              value={formData.quantity}
+              min="0"
+              step="1"
+              onChange={(e) =>
+                setFormData({ ...formData, quantity: e.target.value })
+              }
+              // style={{ fontSize: '1.5rem' }}
+            />
+          </label>
+
+          <label htmlFor="transaction-date">
+            <Typography>Transaction Date:</Typography>
+            <input
+              type="date"
+              name="transaction-date"
+              value={formData.date}
+              onChange={(e) =>
+                setFormData({ ...formData, date: e.target.value })
+              }
+            />
+          </label>
+        </Grid>
+      </Grid>
+      <Button type="submit" startIcon={<SaveIcon />}>
+        Save Transaction
+      </Button>
+    </Box>
   );
 };
 
