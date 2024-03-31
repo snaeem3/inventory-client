@@ -1,5 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import {
+  Container,
+  Typography,
+  Card,
+  CardContent,
+  CardActions,
+  Box,
+  Grid,
+  Stack,
+  Paper,
+  Button,
+  IconButton,
+  Tooltip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  ToggleButton,
+  ToggleButtonGroup,
+} from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import ShieldIcon from '@mui/icons-material/Shield';
+import AddModeratorIcon from '@mui/icons-material/AddModerator';
+import RemoveModeratorIcon from '@mui/icons-material/RemoveModerator';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useAuth } from '../hooks/useAuth';
 import Loading from '../components/Loading';
 import NotLoggedIn from '../components/NotLoggedIn';
@@ -92,11 +119,11 @@ const Inventory = (props) => {
   };
 
   return (
-    <main className="inventory-page">
-      <h1>{`${paramUserId ? paramUserName : 'Your'} Inventory`}</h1>
+    <Container component="main" className="inventory-page">
+      <Typography variant="h2">{`${paramUserId ? paramUserName : 'Your'} Inventory`}</Typography>
       {isLoggedIn ? (
         <>
-          <h2>{`${paramUserId ? paramUserName : 'Your'} Items`}</h2>
+          <Typography variant="h3">{`${paramUserId ? paramUserName : 'Your'} Items`}</Typography>
           <SearchSortControls
             handleSearchChange={handleSearchChange}
             handleSortChange={handleSortChange}
@@ -105,7 +132,7 @@ const Inventory = (props) => {
             {loading ? (
               <Loading />
             ) : (
-              <ul className="inventoryItem-list">
+              <Stack className="inventoryItem-list">
                 {sortArrayOfItems(inventory, sortMethod, true).map(
                   (inventoryItem) => {
                     if (
@@ -126,7 +153,7 @@ const Inventory = (props) => {
                         </Link>
                         <div className="quantity">
                           {!readOnly && (
-                            <button
+                            <IconButton
                               type="button"
                               className="minus"
                               onClick={() =>
@@ -136,12 +163,12 @@ const Inventory = (props) => {
                                 )
                               }
                             >
-                              -
-                            </button>
+                              <RemoveCircleIcon />
+                            </IconButton>
                           )}
                           <p>{inventoryItem.quantity}</p>
                           {!readOnly && (
-                            <button
+                            <IconButton
                               type="button"
                               className="plus"
                               onClick={() =>
@@ -151,8 +178,8 @@ const Inventory = (props) => {
                                 )
                               }
                             >
-                              +
-                            </button>
+                              <AddCircleIcon />
+                            </IconButton>
                           )}
                           {inventoryItem.item.equippable && (
                             <Equipped
@@ -180,32 +207,57 @@ const Inventory = (props) => {
                     );
                   },
                 )}
-              </ul>
+              </Stack>
             )}
           </div>
         </>
       ) : (
         <NotLoggedIn />
       )}
-    </main>
+    </Container>
   );
 };
 
 const Equipped = (props) => {
   const { readOnly, equipped, itemId, onClick } = props;
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div>
       {readOnly ? (
-        <div>{equipped ? <p>Equipped</p> : <p>Not equipped</p>}</div>
+        <div>
+          {equipped ? (
+            <Typography>Equipped</Typography>
+          ) : (
+            <Typography>Not equipped</Typography>
+          )}
+        </div>
       ) : (
-        <button
+        <IconButton
           type="button"
           className="equip-btn"
           onClick={() => onClick(itemId)}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
-          {equipped ? 'Unequip' : 'Equip'}
-        </button>
+          {equipped ? (
+            <Tooltip title="Un-equip">
+              {isHovered ? (
+                <RemoveModeratorIcon color="error" />
+              ) : (
+                <ShieldIcon color="success" />
+              )}
+            </Tooltip>
+          ) : (
+            <Tooltip title="Equip">
+              {isHovered ? (
+                <AddModeratorIcon color="success" />
+              ) : (
+                <ShieldIcon color="" />
+              )}
+            </Tooltip>
+          )}
+        </IconButton>
       )}
     </div>
   );
