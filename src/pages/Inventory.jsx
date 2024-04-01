@@ -4,6 +4,7 @@ import {
   Container,
   Typography,
   Card,
+  CardMedia,
   CardContent,
   CardActions,
   Box,
@@ -13,6 +14,7 @@ import {
   Button,
   IconButton,
   Tooltip,
+  Collapse,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -20,13 +22,18 @@ import {
   DialogActions,
   ToggleButton,
   ToggleButtonGroup,
+  Icon,
 } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import ShieldIcon from '@mui/icons-material/Shield';
 import AddModeratorIcon from '@mui/icons-material/AddModerator';
 import RemoveModeratorIcon from '@mui/icons-material/RemoveModerator';
+import GppGoodIcon from '@mui/icons-material/GppGood';
+import GppBadIcon from '@mui/icons-material/GppBad';
 import DeleteIcon from '@mui/icons-material/Delete';
+import HelpCenterOutlinedIcon from '@mui/icons-material/HelpCenterOutlined';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useAuth } from '../hooks/useAuth';
 import Loading from '../components/Loading';
 import NotLoggedIn from '../components/NotLoggedIn';
@@ -39,6 +46,7 @@ import {
 } from '../apiClient';
 import SearchSortControls from '../components/SearchSortControls';
 import sortArrayOfItems from '../utils/sortArrayOfItems';
+import ExpandMore from '../components/ExpandMore';
 
 const Inventory = (props) => {
   const { readOnly } = props;
@@ -71,7 +79,7 @@ const Inventory = (props) => {
     }
   };
 
-  async function handleChangeQuantity(itemId, newQuantity) {
+  const handleChangeQuantity = async (itemId, newQuantity) => {
     try {
       const response = await changeInventoryItem(userId, itemId, {
         newQuantity,
@@ -81,7 +89,7 @@ const Inventory = (props) => {
     } catch (error) {
       console.error('Error changing quantity: ', error);
     }
-  }
+  };
 
   const handleEquipUnequip = async (itemId) => {
     try {
@@ -93,7 +101,7 @@ const Inventory = (props) => {
     }
   };
 
-  async function handleDeleteInventoryItem(itemId) {
+  const handleDeleteInventoryItem = async (itemId) => {
     try {
       const response = await deleteInventoryItem(userId, itemId);
       console.log('Delete inventory item successful', response);
@@ -101,7 +109,7 @@ const Inventory = (props) => {
     } catch (error) {
       console.error('Error deleting inventory item: ', error);
     }
-  }
+  };
 
   useEffect(() => {
     if (paramUserId) {
@@ -122,95 +130,45 @@ const Inventory = (props) => {
     <Container component="main" className="inventory-page">
       <Typography variant="h2">{`${paramUserId ? paramUserName : 'Your'} Inventory`}</Typography>
       {isLoggedIn ? (
-        <>
-          <Typography variant="h3">{`${paramUserId ? paramUserName : 'Your'} Items`}</Typography>
+        <Stack>
+          {/* <Typography variant="h3">{`${paramUserId ? paramUserName : 'Your'} Items`}</Typography> */}
           <SearchSortControls
             handleSearchChange={handleSearchChange}
             handleSortChange={handleSortChange}
           />
-          <div className="">
-            {loading ? (
-              <Loading />
-            ) : (
-              <Stack className="inventoryItem-list">
-                {sortArrayOfItems(inventory, sortMethod, true).map(
-                  (inventoryItem) => {
-                    if (
-                      searchText.length > 0 &&
-                      !inventoryItem.item.name
-                        .toLowerCase()
-                        .includes(searchText.toLowerCase())
-                    )
-                      return; // This item does NOT match search criteria
+          {loading ? (
+            <Loading />
+          ) : (
+            <Stack spacing={1} className="inventoryItem-list">
+              {sortArrayOfItems(inventory, sortMethod, true).map(
+                (inventoryItem) => {
+                  if (
+                    searchText.length > 0 &&
+                    !inventoryItem.item.name
+                      .toLowerCase()
+                      .includes(searchText.toLowerCase())
+                  )
+                    return; // This item does NOT match search criteria
 
-                    return (
-                      <li
-                        key={inventoryItem.item._id}
-                        className="inventoryItem"
-                      >
-                        <Link to={`/catalog/item/${inventoryItem.item._id}`}>
-                          {inventoryItem.item.name}
-                        </Link>
-                        <div className="quantity">
-                          {!readOnly && (
-                            <IconButton
-                              type="button"
-                              className="minus"
-                              onClick={() =>
-                                handleChangeQuantity(
-                                  inventoryItem.item._id,
-                                  inventoryItem.quantity - 1,
-                                )
-                              }
-                            >
-                              <RemoveCircleIcon />
-                            </IconButton>
-                          )}
-                          <p>{inventoryItem.quantity}</p>
-                          {!readOnly && (
-                            <IconButton
-                              type="button"
-                              className="plus"
-                              onClick={() =>
-                                handleChangeQuantity(
-                                  inventoryItem.item._id,
-                                  inventoryItem.quantity + 1,
-                                )
-                              }
-                            >
-                              <AddCircleIcon />
-                            </IconButton>
-                          )}
-                          {inventoryItem.item.equippable && (
-                            <Equipped
-                              readOnly={readOnly}
-                              equipped={inventoryItem.equipped}
-                              itemId={inventoryItem.item._id}
-                              onClick={handleEquipUnequip}
-                            />
-                          )}
-                          {!readOnly && (
-                            <button
-                              type="button"
-                              className="delete"
-                              onClick={() =>
-                                handleDeleteInventoryItem(
-                                  inventoryItem.item._id,
-                                )
-                              }
-                            >
-                              Delete
-                            </button>
-                          )}
-                        </div>
-                      </li>
-                    );
-                  },
-                )}
-              </Stack>
-            )}
-          </div>
-        </>
+                  return (
+                    <InventoryItem
+                      key={inventoryItem.item._id}
+                      readOnly={readOnly}
+                      item={inventoryItem.item}
+                      quantity={inventoryItem.quantity}
+                      equipped={
+                        inventoryItem.item.equippable && inventoryItem.equipped
+                      }
+                      handleChangeQuantity={handleChangeQuantity}
+                      handleDelete={handleDeleteInventoryItem}
+                      handleEquipUnequip={handleEquipUnequip}
+                    />
+                  );
+                },
+              )}
+            </Stack>
+          )}
+        </Stack>
       ) : (
         <NotLoggedIn />
       )}
@@ -218,48 +176,180 @@ const Inventory = (props) => {
   );
 };
 
+const InventoryItem = (props) => {
+  const {
+    readOnly,
+    item,
+    quantity,
+    equipped,
+    handleChangeQuantity,
+    handleDelete,
+    handleEquipUnequip,
+  } = props;
+
+  const [expanded, setExpanded] = useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  return (
+    <Card>
+      <Grid container>
+        <Grid item xs={2} alignContent="center">
+          <Tooltip title="View Item Detail">
+            <Link
+              to={`/catalog/item/${item._id}`}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              {item.picture ? (
+                <CardMedia
+                  component="img"
+                  image={item.picture}
+                  alt={item.name}
+                  sx={{ width: '64px', height: '64px' }}
+                />
+              ) : (
+                <HelpCenterOutlinedIcon sx={{ fontSize: '64px' }} />
+              )}
+            </Link>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} md={8}>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              {item.name}
+              <ExpandMore
+                expand={expanded}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+              >
+                <ExpandMoreIcon />
+              </ExpandMore>
+            </Typography>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <Typography variant="body2" color="text.secondary">
+                {item.description}
+              </Typography>
+            </Collapse>
+          </CardContent>
+        </Grid>
+        <Grid item xs={4} md={2}>
+          <CardActions sx={{ flexDirection: 'column', m: 0 }}>
+            <Grid container>
+              <Grid item xs={12}>
+                {item.equippable ? (
+                  <Equipped
+                    readOnly={readOnly}
+                    equipped={equipped}
+                    itemId={item._id}
+                    onClick={handleEquipUnequip}
+                  />
+                ) : (
+                  <Icon />
+                )}
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-evenly',
+                  flexGrow: 1,
+                }}
+                className="quantity"
+              >
+                {!readOnly && (
+                  <IconButton
+                    type="button"
+                    className="minus"
+                    onClick={() => handleChangeQuantity(item._id, quantity - 1)}
+                  >
+                    <RemoveCircleIcon />
+                  </IconButton>
+                )}
+                <Tooltip title="Quantity">
+                  <Typography>{quantity}</Typography>
+                </Tooltip>
+                {!readOnly && (
+                  <IconButton
+                    type="button"
+                    className="plus"
+                    onClick={() => handleChangeQuantity(item._id, quantity + 1)}
+                  >
+                    <AddCircleIcon />
+                  </IconButton>
+                )}
+              </Grid>
+              {!readOnly && (
+                <Grid item xs={12}>
+                  <Tooltip title="Delete from Inventory">
+                    <IconButton
+                      type="button"
+                      className="delete"
+                      onClick={() => handleDelete(item._id)}
+                    >
+                      <DeleteIcon color="error" />
+                    </IconButton>
+                  </Tooltip>
+                </Grid>
+              )}
+            </Grid>
+          </CardActions>
+        </Grid>
+      </Grid>
+    </Card>
+  );
+};
+
 const Equipped = (props) => {
   const { readOnly, equipped, itemId, onClick } = props;
   const [isHovered, setIsHovered] = useState(false);
 
+  if (readOnly) {
+    return (
+      <Tooltip title={equipped ? 'Equipped' : 'Unequipped'}>
+        {equipped ? (
+          <GppGoodIcon color="disabled" />
+        ) : (
+          <GppBadIcon color="disabled" />
+        )}
+      </Tooltip>
+    );
+  }
+
   return (
-    <div>
-      {readOnly ? (
-        <div>
-          {equipped ? (
-            <Typography>Equipped</Typography>
+    <IconButton
+      type="button"
+      className="equip-btn"
+      onClick={() => onClick(itemId)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {equipped ? (
+        <Tooltip title="Un-equip">
+          {isHovered ? (
+            <RemoveModeratorIcon color="error" />
           ) : (
-            <Typography>Not equipped</Typography>
+            <ShieldIcon color="success" />
           )}
-        </div>
+        </Tooltip>
       ) : (
-        <IconButton
-          type="button"
-          className="equip-btn"
-          onClick={() => onClick(itemId)}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          {equipped ? (
-            <Tooltip title="Un-equip">
-              {isHovered ? (
-                <RemoveModeratorIcon color="error" />
-              ) : (
-                <ShieldIcon color="success" />
-              )}
-            </Tooltip>
+        <Tooltip title="Equip">
+          {isHovered ? (
+            <AddModeratorIcon color="success" />
           ) : (
-            <Tooltip title="Equip">
-              {isHovered ? (
-                <AddModeratorIcon color="success" />
-              ) : (
-                <ShieldIcon color="" />
-              )}
-            </Tooltip>
+            <ShieldIcon color="" />
           )}
-        </IconButton>
+        </Tooltip>
       )}
-    </div>
+    </IconButton>
   );
 };
 
