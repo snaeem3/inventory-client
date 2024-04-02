@@ -1,3 +1,12 @@
+import {
+  Box,
+  TextField,
+  InputAdornment,
+  FormControl,
+  InputLabel,
+  Select,
+} from '@mui/material';
+import { Search } from '@mui/icons-material';
 import React, { useState, useEffect } from 'react';
 
 /**
@@ -11,38 +20,52 @@ const SearchSortControls = (props) => {
   const { handleSearchChange, handleSortChange } = props;
 
   return (
-    <div className="inventory-controls-container">
-      <div className="search-box">
-        <label htmlFor="search-bar">Search Inventory</label>
-        <div className="search-bar-wrapper">
-          <span className="input" />
-          <input
-            type="search"
-            id="search-bar"
-            name="search-bar"
-            onChange={(e) => handleSearchChange(e)}
-          />
-        </div>
-      </div>
-      <div className="sort-box">
-        <label htmlFor="sort-select">Sort Items by:</label>
-        <select
+    <Box
+      className="inventory-controls-container"
+      display="flex"
+      flexDirection={{ xs: 'column', md: 'row' }}
+      justifyContent="center"
+      alignItems="center"
+      gap={2}
+    >
+      <Box className="search-box">
+        <TextField
+          type="search"
+          id="search-bar"
+          name="search-bar"
+          onChange={(e) => handleSearchChange(e)}
+          placeholder="Search..."
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
+      <FormControl sx={{ m: 1, minWidth: 120 }} className="sort-box">
+        <InputLabel htmlFor="sort-select">Sort</InputLabel>
+        <Select
           name="sort-select"
           id="sort-select"
+          native
+          defaultValue=""
           onChange={(e) => handleSortChange(e)}
+          label="Sort"
         >
           <optgroup label="Name">
             <option value="A-Z">Name A-Z</option>
             <option value="Z-A">Name Z-A</option>
           </optgroup>
-          <optgroup label="Value">
+          <optgroup label="Gold Value">
             <option value="value low-high">Value low-high</option>
             <option value="value high-low">Value high-low</option>
           </optgroup>
-        </select>
-      </div>
+        </Select>
+      </FormControl>
       {/* <div className="equipped-box"></div> */}
-    </div>
+    </Box>
   );
 };
 
