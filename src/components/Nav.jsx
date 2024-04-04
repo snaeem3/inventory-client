@@ -14,6 +14,7 @@ import {
   Tooltip,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import Home from '@mui/icons-material/Home';
 import { useAuth } from '../hooks/useAuth';
 
 const Nav = (props) => {
@@ -86,12 +87,12 @@ const Nav = (props) => {
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             <Link to="/">
-              <Button
+              <IconButton
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                Home
-              </Button>
+                <Home />
+              </IconButton>
             </Link>
             <Link to="/catalog">
               <Button

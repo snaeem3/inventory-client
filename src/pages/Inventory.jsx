@@ -128,7 +128,10 @@ const Inventory = (props) => {
 
   return (
     <Container component="main" className="inventory-page">
-      <Typography variant="h2">{`${paramUserId ? paramUserName : 'Your'} Inventory`}</Typography>
+      <Typography
+        variant="h2"
+        sx={{ py: 2 }}
+      >{`${paramUserId ? paramUserName : 'Your'} Inventory`}</Typography>
       {isLoggedIn ? (
         <Stack>
           {/* <Typography variant="h3">{`${paramUserId ? paramUserName : 'Your'} Items`}</Typography> */}
@@ -315,11 +318,7 @@ const Equipped = (props) => {
   if (readOnly) {
     return (
       <Tooltip title={equipped ? 'Equipped' : 'Unequipped'}>
-        {equipped ? (
-          <GppGoodIcon color="disabled" />
-        ) : (
-          <GppBadIcon color="disabled" />
-        )}
+        {equipped ? <GppGoodIcon color="success" /> : <GppBadIcon color="" />}
       </Tooltip>
     );
   }
