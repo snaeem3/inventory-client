@@ -1,5 +1,23 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import {
+  Container,
+  Typography,
+  Card,
+  CardMedia,
+  CardContent,
+  CardActions,
+  Box,
+  Grid,
+  Stack,
+  Button,
+  IconButton,
+  Tooltip,
+  Chip,
+} from '@mui/material';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import HelpCenterOutlinedIcon from '@mui/icons-material/HelpCenterOutlined';
+import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
 import { fetchItems } from '../apiClient';
 import { useAuth } from '../hooks/useAuth';
 import sortArrayOfItems from '../utils/sortArrayOfItems';
@@ -33,18 +51,24 @@ const Catalog = (props) => {
   }, []);
 
   return (
-    <main className="catalog">
-      <h1>Catalog</h1>
+    <Container component="main" className="catalog" maxWidth="md">
+      <Typography variant="h1" sx={{ py: 2 }}>
+        Catalog
+      </Typography>
       {isLoggedIn && (
         <Link to="/catalog/item/create">
-          <button type="button">Create New Item</button>
+          <Button type="button" startIcon={<AddBoxIcon />} variant="contained">
+            Create New Item
+          </Button>
         </Link>
       )}
-      <SearchSortControls
-        handleSearchChange={handleSearchChange}
-        handleSortChange={handleSortChange}
-      />
-      <ul className="item-list">
+      <Box my={2}>
+        <SearchSortControls
+          handleSearchChange={handleSearchChange}
+          handleSortChange={handleSortChange}
+        />
+      </Box>
+      <Stack spacing={1} className="item-list">
         {sortArrayOfItems(items, sortMethod).map((item) => {
           if (
             searchText.length > 0 &&
@@ -53,13 +77,60 @@ const Catalog = (props) => {
             return; // This item does NOT match search criteria
 
           return (
-            <li key={item._id}>
-              <Link to={`/catalog/item/${item._id}`}>{item.name}</Link>
-            </li>
+            <Card
+              sx={{
+                display: 'flex',
+                flexDirection: { xs: 'column', md: 'row' },
+                borderRadius: 4,
+                border: 'solid 1px lightgray',
+              }}
+            >
+              <Grid
+                container
+                key={item._id}
+                alignItems="center"
+                flexWrap="nowrap"
+                gap={1}
+              >
+                <Grid item>
+                  <Link to={`/catalog/item/${item._id}`}>
+                    {item.picture ? (
+                      <Box
+                        component="img"
+                        src={item.picture}
+                        alt={item.name}
+                        sx={{ width: '64px', height: '64px' }}
+                      />
+                    ) : (
+                      <HelpCenterOutlinedIcon sx={{ fontSize: '64px' }} />
+                    )}
+                  </Link>
+                </Grid>
+                <Grid item display="flex" gap={1} alignItems="center">
+                  <Typography variant="h6">
+                    <Link to={`/catalog/item/${item._id}`}>{item.name}</Link>
+                  </Typography>
+                  {item.equippable && (
+                    <Tooltip title="Equippable">
+                      <ShieldOutlinedIcon />
+                    </Tooltip>
+                  )}
+                </Grid>
+              </Grid>
+              <Stack direction="row" spacing={1} p={1}>
+                {item.category.map((category) => (
+                  <Chip
+                    key={category._id}
+                    // icon={icon}
+                    label={category.name}
+                  />
+                ))}
+              </Stack>
+            </Card>
           );
         })}
-      </ul>
-    </main>
+      </Stack>
+    </Container>
   );
 };
 
