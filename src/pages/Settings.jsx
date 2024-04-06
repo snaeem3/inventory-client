@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import {
+  Container,
+  Typography,
+  Box,
+  Grid,
+  TextField,
+  InputLabel,
+  Input,
+  Button,
+} from '@mui/material';
+import SaveIcon from '@mui/icons-material/Save';
 import { useAuth } from '../hooks/useAuth';
 import Errors from '../components/Errors';
 import { fetchUserData, updateUserAvatar } from '../apiClient';
@@ -59,34 +70,46 @@ const Settings = (props) => {
   }, [userId]);
 
   return (
-    <main className="settings">
-      <h1>Settings</h1>
+    <Container component="main" className="settings" maxWidth="sm">
+      <Typography variant="h1" sx={{ py: 2 }}>
+        Settings
+      </Typography>
       <div className="profile">
-        <h2>Profile</h2>
-        <form onSubmit={handleProfileSubmit}>
-          <label htmlFor="username">Username: </label>
-          <p>{userName}</p>
-          <label htmlFor="avatar">Update Profile Photo </label>
-          <input
+        <Typography variant="h2">Profile</Typography>
+        <Box
+          component="form"
+          onSubmit={handleProfileSubmit}
+          display="flex"
+          flexDirection="column"
+          gap={2}
+          alignItems="center"
+        >
+          <InputLabel htmlFor="username">Username: </InputLabel>
+          <TextField name="username" disabled value={userName} />
+          <InputLabel htmlFor="avatar">Update Profile Photo </InputLabel>
+          <Input
             type="file"
             accept="image/*"
             id="avatar"
             onChange={handleFileChange}
           />
           {imagePreview && (
-            <img
+            <Box
+              component="img"
               src={imagePreview}
               alt="avatar"
-              width={250}
-              height={250}
+              maxWidth={400}
+              height="auto"
               className="img-preview"
             />
           )}
-          <button type="submit">Save changes</button>
-        </form>
+          <Button type="submit" variant="contained" startIcon={<SaveIcon />}>
+            Save changes
+          </Button>
+        </Box>
       </div>
       {errors.length > 0 && <Errors errors={errors} />}
-    </main>
+    </Container>
   );
 };
 
