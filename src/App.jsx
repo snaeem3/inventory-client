@@ -17,6 +17,7 @@ import CreateItem from './pages/CreateItem';
 import UpdateItem from './pages/UpdateItem';
 import Users from './pages/Users';
 import User from './pages/User';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -87,6 +88,7 @@ function App() {
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Footer />
     </AuthProvider>
   );
 }
