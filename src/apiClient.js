@@ -55,8 +55,8 @@ const handleGuestLogin = async () => {
   const guestFormData = { username: guestUserName, password: guestPassword };
   try {
     const response = await handleLogin(guestFormData);
-    console.log('Guest Log in successful: ', response.data);
-    return response.data;
+    console.log('Guest Log in successful: ', response);
+    return response;
   } catch (error) {
     console.error('Error logging in as guest: ', error.response.data);
     throw error;

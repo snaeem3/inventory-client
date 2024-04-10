@@ -141,7 +141,13 @@ const Hero = (props) => {
       navigate('/');
     } catch (error) {
       console.error('Error submitting guest log-in: ', error);
-      setErrors(error.response.data.errors || [error.response.data.error]);
+      if (error.response?.data?.errors) {
+        setErrors(error.response.data.errors);
+      } else if (error.response?.data?.error) {
+        setErrors([error.response.data.error]);
+      } else {
+        setErrors([error]);
+      }
     }
   };
 
