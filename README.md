@@ -1,28 +1,70 @@
-# D&D Social Inventory App
+<a name="readme-top"></a>
 
-This project is a full-stack application designed to help Dungeons & Dragons players manage their character inventories and keep track of their gold.
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
 
-**Live view:**
+<div align="center">
+  <!-- <a href="https://github.com/github_username/repo_name">
+    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  </a> -->
+
+<h3 align="center">D&D Social Inventory</h3>
+
+  <p align="center">
+    This project showcases a Dungeons & Dragons inventory client application built with React and Material UI. Create items, manage your character inventory, keep track of your gold, and view items/inventories of other users!
+    <br />
+    <!-- <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
+    <br /> -->
+    <br />
+    <a href="https://inventory-client-plum.vercel.app/">View Demo</a>
+    <!-- ·
+    <a href="https://github.com/snaeem3/inventory-api/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    ·
+    <a href="https://github.com/snaeem3/inventory-api/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a> -->
+  </p>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li><a href="#project-links">Project Links</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#planned-features">Planned Features</a></li>
+    <li><a href="#skills-involved-with-this-project">Skills Involved with this project</a></li>
+    <li><a href="#installation">Installation</a></li>
+  </ol>
+</details>
+
+## Project Links
+
+**Live view:** [inventory-client-plum.vercel.app/](https://inventory-client-plum.vercel.app/)
 
 NodeJS Backend: [github.com/snaeem3/inventory-api](https://github.com/snaeem3/inventory-api)
 
 This project was inspired by a previous application: [github.com/snaeem3/inventory-application](https://github.com/snaeem3/inventory-application)
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Features
 
-💼 **User Account Management:** Sign up and manage your account, enabling you to add items from the catalog to your personal inventory.
+💼 **User Account Management:** Sign up and manage your account, enabling you to add items from the catalog to your personal inventory
 
-📦 **Effortless Inventory Management:** Seamlessly manage your items and their quantities from the dedicated inventory page.
+📦 **Effortless Inventory Management:** Seamlessly manage your items and their quantities from the dedicated inventory page
 
-⚔️ **Equipment Tracking:** Quickly equip and unequip items to monitor your character's active gear and possessions.
+⚔️ **Equipment Tracking:** Quickly equip and unequip items to monitor your character's active gear and possessions
 
-💰 **Gold Management:** Utilize the Gold tracker to efficiently manage your gold reserves, keeping track of your wealth.
+💰 **Gold Management:** Utilize the Gold tracker to efficiently manage your gold reserves, keeping track of your wealth
 
 📜 **Transaction History:** Create and log gold transactions to remember when and where your wealth is going
 
-🛠️ **Custom Item Creation:** Craft custom items for yourself or share them with friends.
+🛠️ **Custom Item Creation:** Craft custom items for yourself or share them with friends
 
 👥 **Social Interaction:** Explore the inventories of friends and other users
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Planned Features
 
@@ -38,6 +80,8 @@ This project was inspired by a previous application: [github.com/snaeem3/invento
 - User interaction
   - Favorite/follow other users
   - Transactions to transfer gold to other players
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Skills involved with this project:
 
@@ -64,39 +108,53 @@ This project was inspired by a previous application: [github.com/snaeem3/invento
   - `ThemeProvider` and `useTheme` for managing global colors/styles
   - Responsive design for mobile and desktop use
 - [JSDoc](https://jsdoc.app/) to document components and functions
+- App deployment with [Vercel](https://vercel.com/)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Installation:
 
 1. Clone the repository:
 
-```bash
-git clone git@github.com:snaeem3/inventory-client.git
-```
+   ```bash
+   git clone git@github.com:snaeem3/inventory-client.git
+   ```
 
 2. Navigate to the project directory:
 
-```bash
-cd inventory-client
-```
+   ```bash
+   cd inventory-client
+   ```
 
 3. Install dependencies:
 
-```bash
-npm install
-```
+   ```bash
+   npm install
+   ```
 
 4. Update `src/config.js` with the URL of your api server
 
-```javascript
-const config = {
-  baseURL: "YOUR_URL_HERE",
-};
-```
+   ```javascript
+   const config = {
+     baseURL: "YOUR_URL_HERE",
+   };
+   ```
 
-6. Start the development server:
+5. Start the development server:
 
-```bash
-npm run dev
-```
+   ```bash
+   npm run dev
+   ```
 
-5. Open your browser and navigate to [http://localhost:5173](http://localhost:5173) to view the application.
+6. Open your browser and navigate to [http://localhost:5173](http://localhost:5173) to view the application.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+[contributors-shield]: https://img.shields.io/github/contributors/snaeem3/inventory-client.svg?style=for-the-badge
+[contributors-url]: https://github.com/snaeem3/inventory-client/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/snaeem3/inventory-client.svg?style=for-the-badge
+[forks-url]: https://github.com/snaeem3/inventory-client/network/members
+[stars-shield]: https://img.shields.io/github/stars/snaeem3/inventory-client.svg?style=for-the-badge
+[stars-url]: https://github.com/snaeem3/inventory-client/stargazers
+[issues-shield]: https://img.shields.io/github/issues/snaeem3/inventory-client.svg?style=for-the-badge
+[issues-url]: https://github.com/snaeem3/inventory-client/issues
