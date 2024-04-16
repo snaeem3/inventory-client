@@ -37,6 +37,7 @@ const Footer = (props) => (
         <Link
           color="text.secondary"
           href="https://snaeem3.github.io/portfolio/"
+          target="_blank"
         >
           Sameer N.
         </Link>
@@ -54,6 +55,7 @@ const Footer = (props) => (
         <IconButton
           color="inherit"
           href="https://github.com/snaeem3"
+          target="_blank"
           aria-label="GitHub"
           sx={{ alignSelf: 'center' }}
         >
