@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { Container } from '@mui/material';
 import { AuthProvider } from './AuthProvider';
 import './App.css';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -22,73 +23,82 @@ import Footer from './components/Footer';
 function App() {
   return (
     <AuthProvider>
-      <Nav />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/log-in" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/sign-up" element={<Signup />} />
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
-              <Settings />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/inventory"
-          element={
-            <ProtectedRoute>
-              <Inventory />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/gold"
-          element={
-            <ProtectedRoute>
-              <Gold />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/catalog" element={<Catalog />} />
-        <Route path="/catalog/item/:itemId" element={<ItemDetail />} />
-        <Route path="/item/:itemId" element={<ItemDetail />} />
-        <Route
-          path="/item/create"
-          element={
-            <ProtectedRoute>
-              <CreateItem />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="catalog/item/create"
-          element={
-            <ProtectedRoute>
-              <CreateItem />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/catalog/item/:itemId/update"
-          element={
-            <ProtectedRoute>
-              <UpdateItem />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/users" element={<Users />} />
-        <Route path="/users/:userId" element={<User />} />
-        <Route
-          path="/users/:userId/inventory"
-          element={<Inventory readOnly />}
-        />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer />
+      <div
+        style={{
+          boxSizing: 'border-box',
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <Nav />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/log-in" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/sign-up" element={<Signup />} />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/inventory"
+            element={
+              <ProtectedRoute>
+                <Inventory />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/gold"
+            element={
+              <ProtectedRoute>
+                <Gold />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/catalog/item/:itemId" element={<ItemDetail />} />
+          <Route path="/item/:itemId" element={<ItemDetail />} />
+          <Route
+            path="/item/create"
+            element={
+              <ProtectedRoute>
+                <CreateItem />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="catalog/item/create"
+            element={
+              <ProtectedRoute>
+                <CreateItem />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/catalog/item/:itemId/update"
+            element={
+              <ProtectedRoute>
+                <UpdateItem />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/users" element={<Users />} />
+          <Route path="/users/:userId" element={<User />} />
+          <Route
+            path="/users/:userId/inventory"
+            element={<Inventory readOnly />}
+          />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Footer />
+      </div>
     </AuthProvider>
   );
 }

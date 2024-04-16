@@ -40,7 +40,7 @@ const Nav = (props) => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ marginTop: { xs: 0, md: 1 } }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

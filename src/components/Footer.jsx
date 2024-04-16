@@ -18,6 +18,7 @@ const Footer = (props) => (
       gap: { xs: 4, sm: 8 },
       py: { xs: 8, sm: 8 },
       textAlign: { sm: 'center', md: 'left' },
+      marginTop: 'auto', // Keeps footer at bottom of screen (not fixed)
     }}
   >
     <Box
