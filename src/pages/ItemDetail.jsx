@@ -176,6 +176,7 @@ const ItemDetail = (props) => {
                     label="Equippable"
                     color="success"
                     icon={<AddModeratorIcon />}
+                    sx={{ width: 'fit-content', alignSelf: 'center' }}
                   />
                 )}
                 {item.creator && item.creator.username && (
@@ -190,6 +191,9 @@ const ItemDetail = (props) => {
                   type="button"
                   onClick={handleAddItemToInventory}
                   startIcon={<LibraryAddIcon />}
+                  size="large"
+                  variant="contained"
+                  sx={{ my: 2 }}
                 >
                   Add to Inventory
                 </Button>
