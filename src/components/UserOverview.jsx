@@ -132,7 +132,10 @@ const UserOverview = (props) => {
                         </ListItemAvatar>
                         <ListItemText
                           primary={inventoryItem.item.name}
-                          secondary={formatDate(inventoryItem.createdAt)}
+                          secondary={
+                            inventoryItem.createdAt &&
+                            formatDate(inventoryItem.createdAt)
+                          }
                         />
                       </ListItem>
                     </Link>
