@@ -67,7 +67,7 @@ const LogInForm = (props) => {
       navigate('/');
     } catch (error) {
       console.error('Error during login:', error.response.data);
-      setErrors(error.response.data.error);
+      setErrors([error.response.data.error]);
     }
   };
 
