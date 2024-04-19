@@ -12,6 +12,8 @@ import {
   MenuItem,
   Typography,
   Tooltip,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Home from '@mui/icons-material/Home';
@@ -22,6 +24,7 @@ const Nav = (props) => {
 
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -37,6 +40,23 @@ const Nav = (props) => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleLogoutClick = async () => {
+    try {
+      await logout();
+      setSnackBarOpen(true);
+    } catch (error) {
+      console.error('Error logging out');
+    }
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackBarOpen(false);
   };
 
   return (
@@ -176,7 +196,7 @@ const Nav = (props) => {
             >
               {isLoggedIn ? (
                 <div>
-                  <MenuItem onClick={logout}>
+                  <MenuItem onClick={handleLogoutClick}>
                     <Typography textAlign="center">Logout</Typography>
                   </MenuItem>
                   <Link to="/settings">
@@ -209,6 +229,20 @@ const Nav = (props) => {
           </Box>
         </Toolbar>
       </Container>
+      <Snackbar
+        open={snackBarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="success"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          Logout successful!
+        </Alert>
+      </Snackbar>
     </AppBar>
   );
 };

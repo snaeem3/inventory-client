@@ -9,6 +9,8 @@ import {
   Grid,
   TextField,
   Button,
+  CircularProgress,
+  IconButton,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useAuth } from '../hooks/useAuth';
@@ -52,12 +54,14 @@ const SignUpForm = (props) => {
     password: '',
     confirmPassword: '',
   });
+  const [loadingButtonOn, setLoadingButtonOn] = useState(false);
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoadingButtonOn(true);
 
     try {
       const response = await handleSignUp(formData);
@@ -67,6 +71,8 @@ const SignUpForm = (props) => {
     } catch (error) {
       console.error('Error during registration:', error.response.data.errors);
       setErrors(error.response.data.errors.flat().map((err) => err.msg));
+    } finally {
+      setLoadingButtonOn(false);
     }
   };
 
@@ -111,9 +117,20 @@ const SignUpForm = (props) => {
         fullWidth
         margin="normal"
       />
-      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-        Submit
-      </Button>
+      {loadingButtonOn ? (
+        <IconButton disabled>
+          <CircularProgress color="inherit" />
+        </IconButton>
+      ) : (
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Submit
+        </Button>
+      )}
       {errors && <Errors errors={errors} />}
     </Box>
   );
