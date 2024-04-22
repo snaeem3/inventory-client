@@ -29,11 +29,16 @@ const NotLoggedIn = (props) => {
   };
 
   return (
-    <Container component="main" maxWidth="sm">
+    <Container component="main" maxWidth="sm" sx={{ py: 2 }}>
       <Typography variant="h3">
         You must be logged in to view this page
       </Typography>
-      <Stack direction="row" spacing={2} justifyContent="center" sx={{ py: 3 }}>
+      <Stack
+        direction="row"
+        spacing={2}
+        justifyContent="center"
+        sx={{ py: 2, my: 1 }}
+      >
         <Link to="/log-in">
           <Button type="button" size="large">
             Log In

@@ -190,24 +190,45 @@ const Hero = (props) => {
             Solved.
           </Typography>
         </Typography>
-        <Stack direction="row" spacing={3}>
-          <Paper elevation={2} sx={{ p: 2 }}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3}>
+          <Paper
+            elevation={2}
+            sx={{
+              p: 2,
+              display: 'flex',
+              flexDirection: { xs: 'row', sm: 'column' },
+              alignItems: 'center',
+              gap: 2,
+            }}
+          >
             <ConstructionIcon sx={{ fontSize: { xs: 48, md: 192 } }} />
-            <Typography variant="subtitle1" sx={{ pt: 2 }}>
-              Create and Edit items
-            </Typography>
+            <Typography variant="subtitle1">Create Items</Typography>
           </Paper>
-          <Paper elevation={2} sx={{ p: 2 }}>
+          <Paper
+            elevation={2}
+            sx={{
+              p: 2,
+              display: 'flex',
+              flexDirection: { xs: 'row', sm: 'column' },
+              alignItems: 'center',
+              gap: 2,
+            }}
+          >
             <BackpackIcon sx={{ fontSize: { xs: 48, md: 192 } }} />
-            <Typography variant="subtitle1" sx={{ pt: 2 }}>
-              Manage your inventory
-            </Typography>
+            <Typography variant="subtitle1">Manage your inventory</Typography>
           </Paper>
-          <Paper elevation={2} sx={{ p: 2 }}>
+          <Paper
+            elevation={2}
+            sx={{
+              p: 2,
+              display: 'flex',
+              flexDirection: { xs: 'row', sm: 'column' },
+              alignItems: 'center',
+              gap: 2,
+            }}
+          >
             <CurrencyExchangeIcon sx={{ fontSize: { xs: 48, md: 192 } }} />
-            <Typography variant="subtitle1" sx={{ pt: 2 }}>
-              Track your gold
-            </Typography>
+            <Typography variant="subtitle1">Track your gold</Typography>
           </Paper>
         </Stack>
         <Typography
@@ -216,9 +237,8 @@ const Hero = (props) => {
           color="text.secondary"
           sx={{ alignSelf: 'center', width: { sm: '100%', md: '80%' }, p: 1 }}
         >
-          Create, edit, and track your D&D items, gold, and personal inventory.
-          Share your custom items with your friends and players around the
-          world.
+          Create, edit, and track your D&D items, inventory, and gold. Share
+          your custom items with your friends and players around the world.
         </Typography>
         <Grid container spacing={2} justifyContent="center" alignItems="center">
           <Grid item>

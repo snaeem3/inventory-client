@@ -110,7 +110,12 @@ const ItemDetail = (props) => {
             alignItems="center"
           >
             {item.picture && (
-              <Grid item sx={{ width: '50%', overflow: 'hidden' }}>
+              <Grid
+                item
+                xs={12}
+                md={6}
+                sx={{ width: '50%', overflow: 'hidden' }}
+              >
                 <Paper
                   sx={{ width: '100%', height: '100%', overflow: 'hidden' }}
                 >
@@ -127,7 +132,7 @@ const ItemDetail = (props) => {
                 </Paper>
               </Grid>
             )}
-            <Grid item>
+            <Grid item xs={12} md={6}>
               <Stack spacing={2}>
                 <Accordion defaultExpanded>
                   <AccordionSummary
