@@ -72,10 +72,12 @@ const SearchSortControls = (props) => {
           </optgroup>
         </Select>
       </FormControl>
-      <CategoryFilter
-        handleCategoryChange={handleCategoryChange}
-        categories={categories}
-      />
+      {categories.length > 0 && (
+        <CategoryFilter
+          handleCategoryChange={handleCategoryChange}
+          categories={categories}
+        />
+      )}
       {/* <div className="equipped-box"></div> */}
     </Box>
   );
