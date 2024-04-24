@@ -15,11 +15,6 @@ import {
   IconButton,
   Tooltip,
   Collapse,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
   ToggleButton,
   ToggleButtonGroup,
   Icon,
@@ -43,6 +38,7 @@ import {
   toggleEquipped,
   deleteInventoryItem,
   fetchUserData,
+  fetchCategories,
 } from '../apiClient';
 import SearchSortControls from '../components/SearchSortControls';
 import sortArrayOfItems from '../utils/sortArrayOfItems';
@@ -57,6 +53,8 @@ const Inventory = (props) => {
   const [paramUserName, setParamUserName] = useState(paramUserId);
   const [searchText, setSearchText] = useState('');
   const [sortMethod, setSortMethod] = useState('A-Z');
+  const [allCategories, setAllCategories] = useState([]);
+  const [activeCategories, setActiveCategories] = useState([]);
 
   const loadInventoryItems = async (id = userId) => {
     try {
@@ -76,6 +74,16 @@ const Inventory = (props) => {
       setParamUserName(data.username);
     } catch (error) {
       console.error('Error loading username: ', error);
+    }
+  };
+
+  const getCategories = async () => {
+    try {
+      const data = await fetchCategories();
+      console.log(data);
+      setAllCategories(data);
+    } catch (error) {
+      console.error('Error getting categories: ', error);
     }
   };
 
@@ -111,11 +119,16 @@ const Inventory = (props) => {
     }
   };
 
+  const handleCategoryChange = (newActiveCategories) => {
+    setActiveCategories(newActiveCategories);
+  };
+
   useEffect(() => {
     if (paramUserId) {
       loadInventoryItems(paramUserId);
       loadUserName(paramUserId);
     } else loadInventoryItems();
+    getCategories();
   }, [paramUserId, readOnly]);
 
   const handleSearchChange = (event) => {
@@ -138,6 +151,8 @@ const Inventory = (props) => {
           <SearchSortControls
             handleSearchChange={handleSearchChange}
             handleSortChange={handleSortChange}
+            handleCategoryChange={handleCategoryChange}
+            categories={allCategories}
           />
           {loading ? (
             <Loading />
@@ -152,6 +167,16 @@ const Inventory = (props) => {
                       .includes(searchText.toLowerCase())
                   )
                     return; // This item does NOT match search criteria
+
+                  if (
+                    activeCategories.length > 0 &&
+                    !activeCategories.every((activeCategoryId) =>
+                      inventoryItem.item.category
+                        // .map((cat) => cat._id) // map not needed, because category is NOT populated
+                        .includes(activeCategoryId),
+                    )
+                  )
+                    return; // This item does NOT contain ALL active categories
 
                   return (
                     <InventoryItem

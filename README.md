@@ -103,7 +103,7 @@ This project was inspired by a previous application: [github.com/snaeem3/invento
   - Image uploading for profile pictures and items
   - React functional components
   - Conditional rendering based on log-in status, admin status, etc.
-  - Javascript Object Array methods- `map`, `includes`, `sort`, etc.
+  - Javascript Object Array methods- `map`, `includes`, `sort`, `every`, etc.
 - [Material UI](https://mui.com/material-ui/) styled components
   - `ThemeProvider` and `useTheme` for managing global colors/styles
   - Responsive design for mobile and desktop use

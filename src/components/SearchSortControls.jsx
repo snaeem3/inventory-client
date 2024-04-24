@@ -8,16 +8,24 @@ import {
 } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import React, { useState, useEffect } from 'react';
+import CategoryFilter from './CategoryFilter';
 
 /**
  * Component for displaying search and sort controls for inventory items.
  * @param {Object} props - The component props.
  * @param {function} props.handleSearchChange - Function to handle search input change.
  * @param {function} props.handleSortChange - Function to handle sort select change.
+ * @param {function} props.handleCategoryChange - Function to handle category change.
+ * @param {Array.<{categoryName: String, id: String}>} props.categories - Array of categories
  * @returns {JSX.Element} The rendered search and sort controls.
  */
 const SearchSortControls = (props) => {
-  const { handleSearchChange, handleSortChange } = props;
+  const {
+    handleSearchChange,
+    handleSortChange,
+    handleCategoryChange,
+    categories,
+  } = props;
 
   return (
     <Box
@@ -64,6 +72,10 @@ const SearchSortControls = (props) => {
           </optgroup>
         </Select>
       </FormControl>
+      <CategoryFilter
+        handleCategoryChange={handleCategoryChange}
+        categories={categories}
+      />
       {/* <div className="equipped-box"></div> */}
     </Box>
   );

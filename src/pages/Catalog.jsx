@@ -18,7 +18,7 @@ import {
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import HelpCenterOutlinedIcon from '@mui/icons-material/HelpCenterOutlined';
 import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
-import { fetchItems } from '../apiClient';
+import { fetchCategories, fetchItems } from '../apiClient';
 import { useAuth } from '../hooks/useAuth';
 import sortArrayOfItems from '../utils/sortArrayOfItems';
 import SearchSortControls from '../components/SearchSortControls';
@@ -27,6 +27,8 @@ const Catalog = (props) => {
   const [items, setItems] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [sortMethod, setSortMethod] = useState('A-Z');
+  const [allCategories, setAllCategories] = useState([]);
+  const [activeCategories, setActiveCategories] = useState([]);
   const { isLoggedIn, isAdmin } = useAuth();
 
   const handleSearchChange = (event) => {
@@ -35,6 +37,10 @@ const Catalog = (props) => {
 
   const handleSortChange = (event) => {
     setSortMethod(event.target.value);
+  };
+
+  const handleCategoryChange = (newActiveCategories) => {
+    setActiveCategories(newActiveCategories);
   };
 
   useEffect(() => {
@@ -47,7 +53,17 @@ const Catalog = (props) => {
         console.error('Error: ', error);
       }
     };
+    const getCategories = async () => {
+      try {
+        const data = await fetchCategories();
+        console.log(data);
+        setAllCategories(data);
+      } catch (error) {
+        console.error('Error getting categories: ', error);
+      }
+    };
     getCatalogItems();
+    getCategories();
   }, []);
 
   return (
@@ -66,6 +82,8 @@ const Catalog = (props) => {
         <SearchSortControls
           handleSearchChange={handleSearchChange}
           handleSortChange={handleSortChange}
+          handleCategoryChange={handleCategoryChange}
+          categories={allCategories}
         />
       </Box>
       <Stack spacing={1} className="item-list">
@@ -76,6 +94,14 @@ const Catalog = (props) => {
           )
             return; // This item does NOT match search criteria
 
+          if (
+            activeCategories.length > 0 &&
+            !activeCategories.every((activeCategoryId) =>
+              item.category.map((cat) => cat._id).includes(activeCategoryId),
+            )
+          )
+            return; // This item does NOT contain ALL active categories
+
           return (
             <Card
               sx={{
@@ -84,14 +110,9 @@ const Catalog = (props) => {
                 borderRadius: 4,
                 border: 'solid 1px lightgray',
               }}
+              key={item._id}
             >
-              <Grid
-                container
-                key={item._id}
-                alignItems="center"
-                flexWrap="nowrap"
-                gap={1}
-              >
+              <Grid container alignItems="center" flexWrap="nowrap" gap={1}>
                 <Grid item>
                   <Link to={`/catalog/item/${item._id}`}>
                     {item.picture ? (
