@@ -18,6 +18,7 @@ import {
   DialogContentText,
   DialogTitle,
   Alert,
+  IconButton,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
@@ -26,6 +27,7 @@ import AddModeratorIcon from '@mui/icons-material/AddModerator';
 import GppBadIcon from '@mui/icons-material/GppBad';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import ShareIcon from '@mui/icons-material/Share';
 import { addItemToInventory, fetchItem, deleteItem } from '../apiClient';
 import { useAuth } from '../hooks/useAuth';
 import Loading from '../components/Loading';
@@ -181,7 +183,7 @@ const ItemDetail = (props) => {
                     label="Equippable"
                     color="success"
                     icon={<AddModeratorIcon />}
-                    sx={{ width: 'fit-content', alignSelf: 'center' }}
+                    sx={{ width: 'fit-content', alignSelf: 'center', px: 1 }}
                   />
                 )}
                 {item.creator && item.creator.username && (
@@ -191,21 +193,30 @@ const ItemDetail = (props) => {
                   </Typography>
                 )}
               </Stack>
-              <div className="add-to-inventory">
-                <Button
-                  type="button"
-                  onClick={handleAddItemToInventory}
-                  startIcon={<LibraryAddIcon />}
-                  size="large"
-                  variant="contained"
-                  sx={{ my: 2 }}
-                >
-                  Add to Inventory
-                </Button>
-                {addItemResponse !== '' && (
-                  <AddItemResponse result={addItemResponse} />
-                )}
-              </div>
+              <Stack
+                className="itemDetail-actions"
+                direction="row"
+                justifyContent="center"
+              >
+                <div className="add-to-inventory">
+                  <Button
+                    type="button"
+                    onClick={handleAddItemToInventory}
+                    startIcon={<LibraryAddIcon />}
+                    size="large"
+                    variant="contained"
+                    sx={{ my: 2 }}
+                  >
+                    Add to Inventory
+                  </Button>
+                  {addItemResponse !== '' && (
+                    <AddItemResponse result={addItemResponse} />
+                  )}
+                </div>
+                <IconButton aria-label="share" disabled>
+                  <ShareIcon />
+                </IconButton>
+              </Stack>
               {(isAdmin || item.creator?._id === userId) && (
                 <>
                   <Link to={`/catalog/item/${itemId}/update`}>
