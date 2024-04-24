@@ -9,6 +9,8 @@ import {
   InputLabel,
   Input,
   Button,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import { useAuth } from '../hooks/useAuth';
@@ -29,6 +31,8 @@ const Settings = (props) => {
   const [userName, setUserName] = useState(user);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
+  const [snackBarMessage, setSnackBarMessage] = useState('');
 
   const getUserData = async (id) => {
     try {
@@ -58,10 +62,20 @@ const Settings = (props) => {
       const response = await updateUserAvatar(userId, formData);
       console.log('updateUserAvatar successful: ', response);
       updateLocalProfilePictureURL(response);
+      setSnackBarMessage('Profile updated successfully!');
+      setSnackBarOpen(true);
     } catch (error) {
       console.error(`Error updating profile: `, error);
       setErrors(error);
     }
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackBarOpen(false);
   };
 
   useEffect(() => {
@@ -109,6 +123,20 @@ const Settings = (props) => {
         </Box>
       </div>
       {errors.length > 0 && <Errors errors={errors} />}
+      <Snackbar
+        open={snackBarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="success"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {snackBarMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };
