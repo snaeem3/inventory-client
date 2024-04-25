@@ -16,5 +16,6 @@ export default function formatDate(
   dateOptions = defaultDateOptions,
 ) {
   const date = new Date(inputDate);
+  date.setMinutes(date.getMinutes() + date.getTimezoneOffset()); // Adjust to local time zone
   return date.toLocaleDateString('en-US', dateOptions);
 }

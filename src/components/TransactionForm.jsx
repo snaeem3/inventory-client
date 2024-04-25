@@ -16,7 +16,7 @@ const TransactionForm = (props) => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     // Adjusting for time zone offset
-    date.setDate(date.getDate() - 1);
+    date.setMinutes(date.getMinutes() + date.getTimezoneOffset()); // Adjust to local time zone
     return date.toISOString().split('T')[0];
   };
 
