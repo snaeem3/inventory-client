@@ -49,6 +49,7 @@ const Nav = (props) => {
     } catch (error) {
       console.error('Error logging out');
     }
+    handleCloseUserMenu();
   };
 
   const handleSnackbarClose = (event, reason) => {
