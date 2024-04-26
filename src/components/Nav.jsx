@@ -94,12 +94,12 @@ const Nav = (props) => {
               }}
             >
               <Link to="/">
-                <MenuItem>Home</MenuItem>
+                <MenuItem onClick={handleCloseNavMenu}>Home</MenuItem>
               </Link>
-              <MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
                 <Link to="/catalog">Item Catalog</Link>
               </MenuItem>
-              <MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
                 <Link to="/users">Users</Link>
               </MenuItem>
             </Menu>
