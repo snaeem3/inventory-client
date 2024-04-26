@@ -100,7 +100,7 @@ const ItemDetail = (props) => {
           <Loading />
         </Box>
       ) : (
-        <Stack spacing={2}>
+        <Stack spacing={2} my={4}>
           <Typography
             variant="h2"
             sx={{ wordWrap: 'break-word' }}
@@ -110,6 +110,7 @@ const ItemDetail = (props) => {
             direction={{ xs: 'column', md: 'row-reverse' }}
             justifyContent="center"
             alignItems="center"
+            spacing={{ xs: 0, md: 4 }}
           >
             {item.picture && (
               <Grid
@@ -117,9 +118,17 @@ const ItemDetail = (props) => {
                 xs={12}
                 md={6}
                 sx={{ width: '50%', overflow: 'hidden' }}
+                my={2}
+                alignSelf={{ xs: 'auto', md: 'start' }}
               >
                 <Paper
-                  sx={{ width: '100%', height: '100%', overflow: 'hidden' }}
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    borderRadius: 8,
+                  }}
                 >
                   <img
                     src={item.picture}
@@ -145,7 +154,9 @@ const ItemDetail = (props) => {
                     <Typography>Description</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>{item.description}</Typography>
+                    <Typography variant="body1" whiteSpace="pre-line">
+                      {item.description}
+                    </Typography>
                   </AccordionDetails>
                 </Accordion>
                 <Box>

@@ -44,7 +44,9 @@ const TransactionForm = (props) => {
       component="form"
       className="transaction-form"
       onSubmit={handleSubmit}
-      sx={{ p: 2, bgcolor: 'grey.300' }}
+      p={2}
+      bgcolor="grey.100"
+      borderRadius={2}
     >
       <Grid container>
         <Grid item xs={12} md={8}>

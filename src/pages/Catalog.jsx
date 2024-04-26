@@ -114,13 +114,17 @@ const Catalog = (props) => {
             >
               <Grid container alignItems="center" flexWrap="nowrap" gap={1}>
                 <Grid item>
-                  <Link to={`/catalog/item/${item._id}`}>
+                  <Link
+                    to={`/catalog/item/${item._id}`}
+                    style={{ display: 'flex' }}
+                  >
                     {item.picture ? (
                       <Box
                         component="img"
                         src={item.picture}
                         alt={item.name}
                         sx={{ width: '64px', height: '64px' }}
+                        borderRadius={2}
                       />
                     ) : (
                       <HelpCenterOutlinedIcon sx={{ fontSize: '64px' }} />
@@ -138,15 +142,17 @@ const Catalog = (props) => {
                   )}
                 </Grid>
               </Grid>
-              <Stack direction="row" spacing={1} p={1}>
-                {item.category.map((category) => (
-                  <Chip
-                    key={category._id}
-                    // icon={icon}
-                    label={category.name}
-                  />
-                ))}
-              </Stack>
+              {item.category.length > 0 && (
+                <Stack direction="row" spacing={1} p={1}>
+                  {item.category.map((cat) => (
+                    <Chip
+                      key={cat._id}
+                      // icon={icon}
+                      label={cat.name}
+                    />
+                  ))}
+                </Stack>
+              )}
             </Card>
           );
         })}

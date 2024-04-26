@@ -157,7 +157,7 @@ const Inventory = (props) => {
           {loading ? (
             <Loading />
           ) : (
-            <Stack spacing={1} className="inventoryItem-list">
+            <Stack spacing={1} className="inventoryItem-list" my={1}>
               {sortArrayOfItems(inventory, sortMethod, true).map(
                 (inventoryItem) => {
                   if (
@@ -223,7 +223,7 @@ const InventoryItem = (props) => {
 
   return (
     <Card>
-      <Grid container>
+      <Grid container alignItems={{ xs: 'flex-start', md: 'center' }}>
         <Grid item xs={2} alignContent="center">
           <Tooltip title="View Item Detail">
             <Link
@@ -239,7 +239,7 @@ const InventoryItem = (props) => {
                   component="img"
                   image={item.picture}
                   alt={item.name}
-                  sx={{ width: '64px', height: '64px' }}
+                  sx={{ width: '64px', height: '64px', borderRadius: 2 }}
                 />
               ) : (
                 <HelpCenterOutlinedIcon sx={{ fontSize: '64px' }} />

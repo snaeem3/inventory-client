@@ -67,7 +67,7 @@ const UserOverview = (props) => {
           </Box>
         </Grid>
         <Grid item xs={12} md={6} className="most-valuable-items-container">
-          <Box sx={{ p: 2, bgcolor: 'grey.300', borderRadius: 4 }}>
+          <Box sx={{ p: 2, bgcolor: 'grey.100', borderRadius: 4 }}>
             <Typography component="h2" variant="h3" color="primary">
               Most Valuable Items
             </Typography>
@@ -83,7 +83,13 @@ const UserOverview = (props) => {
                       style={{ textDecoration: 'none' }}
                     >
                       <ListItem
-                        sx={{ my: 2, bgcolor: 'white', borderRadius: 4 }}
+                        sx={{
+                          my: 2,
+                          bgcolor: 'white',
+                          borderRadius: 4,
+                          border: 'solid 1px white',
+                          ':hover': { borderColor: 'black' },
+                        }}
                       >
                         <ListItemAvatar>
                           <Avatar
@@ -104,7 +110,7 @@ const UserOverview = (props) => {
           </Box>
         </Grid>
         <Grid item xs={12} md={6} className="newest-items-container">
-          <Box sx={{ p: 2, bgcolor: 'grey.300', borderRadius: 4 }}>
+          <Box sx={{ p: 2, bgcolor: 'grey.100', borderRadius: 4 }}>
             <Typography component="h2" variant="h3" color="primary">
               Newest Items
             </Typography>
@@ -117,10 +123,18 @@ const UserOverview = (props) => {
                     <Link
                       to={`/catalog/item/${inventoryItem.item._id}`}
                       key={inventoryItem._id}
-                      style={{ textDecoration: 'none' }}
+                      style={{
+                        textDecoration: 'none',
+                      }}
                     >
                       <ListItem
-                        sx={{ my: 2, bgcolor: 'white', borderRadius: 4 }}
+                        sx={{
+                          my: 2,
+                          bgcolor: 'white',
+                          borderRadius: 4,
+                          border: 'solid 1px white',
+                          ':hover': { borderColor: 'black' },
+                        }}
                       >
                         <ListItemAvatar>
                           <Avatar

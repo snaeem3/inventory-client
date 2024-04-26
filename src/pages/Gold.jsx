@@ -143,7 +143,9 @@ const Gold = (props) => {
         <NotLoggedIn />
       ) : (
         <>
-          <Typography variant="h2">{gold}</Typography>
+          <Typography variant="h2" py={2}>
+            {gold}
+          </Typography>
 
           <Dialog
             open={showQuickEditGold}
