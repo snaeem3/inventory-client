@@ -26,6 +26,8 @@
   </p>
 </div>
 
+![home page](https://github.com/snaeem3/inventory-client/assets/11710951/badb6a86-4780-4395-9c1a-5ed5c1a99fbd)
+
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
@@ -63,6 +65,10 @@ This project was inspired by a previous application: [github.com/snaeem3/invento
 🛠️ **Custom Item Creation:** Craft custom items for yourself or share them with friends
 
 👥 **Social Interaction:** Explore the inventories of friends and other users
+
+![item detail](https://github.com/snaeem3/inventory-client/assets/11710951/a1538abf-9ed0-4090-961a-aa78aea97200)
+
+![gold](https://github.com/snaeem3/inventory-client/assets/11710951/87d08d31-1e66-43c5-b5e4-2da29110efea)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -132,7 +138,7 @@ This project was inspired by a previous application: [github.com/snaeem3/invento
    npm install
    ```
 
-4. Update `src/config.js` with the URL of your api server
+4. Update the `baseURL` variable in `src/config.js` with the URL of your api server
 
    ```javascript
    const config = {
